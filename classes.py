@@ -2,20 +2,17 @@ import cv2
 import numpy as np 
 
 class image():
-    def __init__(self, index):
+    def __init__(self, index, path):
         self.index = index
-        self.path = None
+        self.path = path
         self.name = None
+        self.shape = None
         self.fft = None
         self.fft_shift = None
-        self.shape = None
         self.fft_phase = None
         self.fft_mag = None
         self.fft_real = None
         self.fft_imag = None
-        
-    def browse_image(self):
-        pass
         
     def read_image(self):
         pass
