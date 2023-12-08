@@ -16,7 +16,7 @@ if __name__ == "__main__":
   app = QApplication(sys.argv)
   window = FourierTransformMixer()
   window.setWindowTitle("Fourier Transform Mixer")
-  app.setWindowIcon(QIcon("assets/logo.jpg"))
+  # app.setWindowIcon(QIcon("assets/logo.jpg"))
   window.resize(1450,950)
   window.show()
   sys.exit(app.exec_())
