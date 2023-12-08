@@ -73,10 +73,11 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(207, 207, 207);</string>
+                <string notr="true">background-color: rgb(207, 207, 207);
+font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string>Double click to add Image</string>
                </property>
               </widget>
              </item>
@@ -153,10 +154,11 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(207, 207, 207);</string>
+                <string notr="true">background-color: rgb(207, 207, 207);
+font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string>Double click to add Image</string>
                </property>
               </widget>
              </item>
@@ -234,10 +236,11 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(207, 207, 207);</string>
+                <string notr="true">background-color: rgb(207, 207, 207);
+font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string>Double click to add Image</string>
                </property>
               </widget>
              </item>
@@ -314,10 +317,11 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(207, 207, 207);</string>
+                <string notr="true">background-color: rgb(207, 207, 207);
+font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
-                <string>TextLabel</string>
+                <string>Double click to add Image</string>
                </property>
               </widget>
              </item>
