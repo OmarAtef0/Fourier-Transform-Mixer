@@ -19,9 +19,9 @@ class FourierTransformMixer(QMainWindow):
     self.image_7 = Image()
 
     self.ui.label_1.mouseDoubleClickEvent = lambda event: self.image_1.browse_file(self.ui.label_1)
-    self.ui.label_3.mouseDoubleClickEvent = lambda event: Image.browse_file(self.ui.label_3)
-    self.ui.label_5.mouseDoubleClickEvent = lambda event: Image.browse_file(self.ui.label_5)
-    self.ui.label_7.mouseDoubleClickEvent = lambda event: Image.browse_file(self.ui.label_7)
+    self.ui.label_3.mouseDoubleClickEvent = lambda event: self.image_3.browse_file(self.ui.label_3)
+    self.ui.label_5.mouseDoubleClickEvent = lambda event: self.image_5.browse_file(self.ui.label_5)
+    self.ui.label_7.mouseDoubleClickEvent = lambda event: self.image_7.browse_file(self.ui.label_7)
       
 
 if __name__ == "__main__":

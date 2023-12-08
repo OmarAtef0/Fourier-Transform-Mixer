@@ -72,6 +72,9 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(207, 207, 207);</string>
+               </property>
                <property name="text">
                 <string>TextLabel</string>
                </property>
@@ -118,6 +121,9 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(207, 207, 207);</string>
+                  </property>
                   <property name="text">
                    <string>TextLabel</string>
                   </property>
@@ -145,6 +151,9 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(207, 207, 207);</string>
                </property>
                <property name="text">
                 <string>TextLabel</string>
@@ -192,6 +201,10 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(207, 207, 207);
+</string>
+                  </property>
                   <property name="text">
                    <string>TextLabel</string>
                   </property>
@@ -219,6 +232,9 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(207, 207, 207);</string>
                </property>
                <property name="text">
                 <string>TextLabel</string>
@@ -266,6 +282,9 @@
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(207, 207, 207);</string>
+                  </property>
                   <property name="text">
                    <string>TextLabel</string>
                   </property>
@@ -293,6 +312,9 @@
                  <horstretch>0</horstretch>
                  <verstretch>0</verstretch>
                 </sizepolicy>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: rgb(207, 207, 207);</string>
                </property>
                <property name="text">
                 <string>TextLabel</string>
@@ -339,6 +361,9 @@
                     <horstretch>0</horstretch>
                     <verstretch>0</verstretch>
                    </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background-color: rgb(207, 207, 207);</string>
                   </property>
                   <property name="text">
                    <string>TextLabel</string>
