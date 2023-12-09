@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 from PyQt5.QtGui import QImageReader, QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QLabel
 
@@ -15,38 +16,41 @@ class Image():
         self.file_path = None
         self.original_img = None  # Store the original image data (NumPy array)
         self.img = None  # for display only
-        # self.displayed_after_reshape = set()  # Flag to track if displayed after reshape
+        # self.displayed_after_reshape = False  # Flag to track if displayed after reshape
         self.label = None  # QLabel containing Image
+        self.spectrum_label = None # QLabel Containing the Spectrums
         self.shape = None
         self.fft = None
         self.fft_shift = None
-        self.fft_phase = None
-        self.fft_mag = None
-        self.fft_real = None
-        self.fft_imag = None
+        self.phase = None
+        self.mag = None
+        self.real = None
+        self.imag = None
         Image.image_instances.append(self)
 
     def get_id(self):
         return self.id
 
-    def browse_file(self, label):
+    def browse_file(self, label,spectrum_label):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         path, _ = QFileDialog.getOpenFileName(None, "Browse Image File", "", "Images (*.png *.jpg *.bmp *.gif *.tif *.tiff);;All Files (*)", options=options)
         if path:
+            self.spectrum_label = spectrum_label
             self.set_file_path(path, label)
 
     def set_file_path(self, path, label):
         self.path = path
         self.load_image(path, label)
 
-    def load_image(self, path, label, show=True):
+    def load_image(self, path, label ,show=True):
         try:
             # Read and convert the image
             self.original_img = cv2.imread(path, cv2.IMREAD_GRAYSCALE).astype(np.float32)
             self.label = label
             self.reshape(self.original_img.shape[0], self.original_img.shape[1])
             self.reshape_all()
+            
 
             # Convert to uint8 and scale pixel values
             self.original_img = self.original_img.astype(np.uint8)
@@ -58,8 +62,8 @@ class Image():
 
             # Set the original and current images as QPixmap
             self.img = QPixmap.fromImage(q_image)
-
-            if show:
+            self.compute_fourier_transform(self.spectrum_label)
+            if show: #used for hide/show
                 # Display the image using a PyQt widget (e.g., QLabel)
                 self.display_image(label)
         except cv2.error as e:
@@ -128,3 +132,70 @@ class Image():
                     inst.display_image(inst.label)
             except Exception as e:
                 print(f"Error in instance {inst.get_id()}: {str(e)}")
+
+    def compute_fourier_transform(self,spectrum_label, show=True):
+        """
+        Compute the 2D Fourier Transform and related components of the image.
+
+        Parameters:
+        - show (bool, optional): If True, display visualizations of the Fourier Transform components.
+                                Default is True.
+
+        Returns:
+        - None
+        """
+        # Compute the 2D Fourier Transform
+        self.fft = np.fft.fft2(self.original_img)
+
+        # Shift the zero-frequency component to the center
+        self.fft_shifted = np.fft.fftshift(self.fft)
+
+        # Compute the magnitude of the spectrum
+        self.mag = np.abs(self.fft)
+
+        # Compute the phase of the spectrum
+        self.phase = np.angle(self.fft)
+
+        # real ft components
+        self.real = self.fft.real
+
+        #imaginary ft components
+        self.imag = self.fft.imag
+
+        # Compute the components of the shifted Fourier Transform
+        self.components_shifted=[np.log(np.abs(self.fft_shifted)+1) , np.angle(self.fft_shifted) , np.log(self.fft_shifted.real+1) , np.log(self.fft_shifted.imag+1)]
+
+        #contruct a dictionary to map each component to its type
+        self.type_to_component = dict(zip(["FT Magnitude", "FT Phase", "FT Real", "FT Imaginary"], self.components_shifted))
+
+        ####### M7taga layout bta3 el osadha ######
+        if show: 
+            # Plot the magnitude spectrum by default
+            self.plot_spectrum("FT Magnitude", spectrum_label) 
+
+    def plot_spectrum(self, spectrum_type,spectrum_label):
+        """
+        Plot the selected spectrum type.
+
+        Parameters:
+        - spectrum_type (str): The type of spectrum to plot.
+
+        Returns:
+        - None
+        """
+        if spectrum_type in self.type_to_component:
+            
+            # Retrieve the corresponding spectrum from the dictionary
+            spectrum = self.type_to_component[spectrum_type]
+            print(f"The type is {spectrum_type} and its values are: {spectrum}")
+            # Convert to bytes
+            spectrum_bytes = spectrum.tobytes()
+
+            # Convert to QImage
+            bytes_per_line = 1 * spectrum.shape[1]
+            q_image = QImage(spectrum_bytes, spectrum.shape[1], spectrum.shape[0], bytes_per_line, QImage.Format_Grayscale8)
+
+            # Set the image in the QLabel
+            spectrum_label.setPixmap(QPixmap.fromImage(q_image))
+        else:
+            print(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")

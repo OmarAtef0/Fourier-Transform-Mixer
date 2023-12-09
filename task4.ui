@@ -109,7 +109,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>FT Imaginary components</string>
+                    <string>FT Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -190,7 +190,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>FT Imaginary components</string>
+                    <string>FT Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -272,7 +272,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>FT Imaginary components</string>
+                    <string>FT Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -353,7 +353,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </item>
                   <item>
                    <property name="text">
-                    <string>FT Imaginary components</string>
+                    <string>FT Imaginary</string>
                    </property>
                   </item>
                  </widget>
