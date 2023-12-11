@@ -5,27 +5,25 @@ from PyQt5.QtGui import QImageReader, QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QLabel
 
 class Image():
-    id_counter = 0
     image_instances = []
     initial_width = 320
     initial_height = 200
 
     def __init__(self):
-        self.id = Image.id_counter
-        Image.id_counter += 1
-        self.file_path = None
+        self.path = None
         self.original_img = None  # Store the original image data (NumPy array)
         self.img = None  # for display only
         # self.displayed_after_reshape = False  # Flag to track if displayed after reshape
         self.label = None  # QLabel containing Image
         self.spectrum_label = None # QLabel Containing the Spectrums
         self.shape = None
-        self.fft = None
-        self.fft_shift = None
-        self.phase = None
-        self.mag = None
-        self.real = None
-        self.imag = None
+
+        #Image Components
+        self.fft ,self.fft_shift = None ,None
+        self.phase , self.phase_shifted = None,None
+        self.mag ,self.mag_shifted = None, None
+        self.real, self.real_shifted= None, None
+        self.imag, self.imag_shifted = None, None
         Image.image_instances.append(self)
 
     def get_id(self):
@@ -148,25 +146,37 @@ class Image():
         self.fft = np.fft.fft2(self.original_img)
 
         # Shift the zero-frequency component to the center
-        self.fft_shifted = np.fft.fftshift(self.fft)
+        self.fft_shift = np.fft.fftshift(self.fft)
 
         # Compute the magnitude of the spectrum
         self.mag = np.abs(self.fft)
+        self.mag_shifted = np.abs(self.fft_shift)
 
         # Compute the phase of the spectrum
         self.phase = np.angle(self.fft)
+        self.phase_shifted = np.angle(self.fft_shift)
 
         # real ft components
-        self.real = self.fft.real
+        self.real = np.real(self.fft)
+        self.real_shifted = np.real(self.fft_shift)
 
         #imaginary ft components
-        self.imag = self.fft.imag
+        self.imag = np.imag(self.fft)
+        self.imag_shifted = np.imag(self.fft_shift)
 
         # Compute the components of the shifted Fourier Transform
-        self.components_shifted=[np.log(np.abs(self.fft_shifted)+1) , np.angle(self.fft_shifted) , np.log(self.fft_shifted.real+1) , np.log(self.fft_shifted.imag+1)]
+        self.fft_components= [np.multiply(np.log(self.mag_shifted+1),20)
+                             , self.phase_shifted
+                            , self.real_shifted ,
+                              self.imag_shifted]
 
         #contruct a dictionary to map each component to its type
-        self.type_to_component = dict(zip(["FT Magnitude", "FT Phase", "FT Real", "FT Imaginary"], self.components_shifted))
+        self.fft_dict = {
+                        "FT Magnitude": self.fft_components[0],
+                        "FT Phase": self.fft_components[1],
+                        "FT Real": self.fft_components[2],
+                        "FT Imaginary": self.fft_components[3] }
+
 
         ####### M7taga layout bta3 el osadha ######
         if show: 
@@ -183,11 +193,11 @@ class Image():
         Returns:
         - None
         """
-        if spectrum_type in self.type_to_component:
+        if spectrum_type in self.fft_dict:
             
             # Retrieve the corresponding spectrum from the dictionary
-            spectrum = self.type_to_component[spectrum_type]
-            print(f"The type is {spectrum_type} and its values are: {spectrum}")
+            spectrum = self.fft_dict[spectrum_type]
+            print(f"The type is {spectrum_type} and its values are: {spectrum} ,its shape is: {spectrum.shape}")
             # Convert to bytes
             spectrum_bytes = spectrum.tobytes()
 
