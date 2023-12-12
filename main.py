@@ -65,16 +65,16 @@ class FourierTransformMixer(QMainWindow):
       selected_option = None
       combo_to_exclude = None
 
-      if clicked_button == self.ui.addButton:
+      if clicked_button == self.addbuttons[0]:
           selected_option = self.ui.comboBox_6.currentText()
           combo_to_exclude = self.ui.comboBox_6
-      elif clicked_button == self.ui.addButton_2:
+      elif clicked_button == self.addbuttons[1]:
           selected_option = self.ui.comboBox_7.currentText()
           combo_to_exclude = self.ui.comboBox_7
-      elif clicked_button == self.ui.addButton_3:
+      elif clicked_button == self.addbuttons[2]:
           selected_option = self.ui.comboBox_8.currentText()
           combo_to_exclude = self.ui.comboBox_8
-      elif clicked_button == self.ui.addButton_4:
+      elif clicked_button == self.addbuttons[3]:
           selected_option = self.ui.comboBox_9.currentText()
           combo_to_exclude = self.ui.comboBox_9
 
