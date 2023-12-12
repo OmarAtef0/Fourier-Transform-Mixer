@@ -12,14 +12,13 @@ class FourierTransformMixer(QMainWindow):
     # Set up the UI
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)  
-
+    
     self.images = [Image() for _ in range(4)]
+    self.addbuttons = [self.ui.addButton,self.ui.addButton_2,self.ui.addButton_3,self.ui.addButton_4 ]
     labels = [self.ui.label_1, self.ui.label_3, self.ui.label_5, self.ui.label_7]
     spectrum_labels = [self.ui.label_2, self.ui.label_4, self.ui.label_6, self.ui.label_8]
     combos = [self.ui.comboBox, self.ui.comboBox_2, self.ui.comboBox_3, self.ui.comboBox_4]
 
-    # # Use a single list for both combo and spectrum label
-    # combo_spectrum_pairs = list(zip(combos, spectrum_labels))
 
     for label, spectrum_label, image in zip(labels, spectrum_labels, self.images):
         label.mouseDoubleClickEvent = lambda event, img=image, lbl1=label, lbl2=spectrum_label: img.browse_file(lbl1, lbl2)
@@ -27,6 +26,8 @@ class FourierTransformMixer(QMainWindow):
     for combo, spectrum_label, image in zip(combos, spectrum_labels, self.images):
       combo.currentIndexChanged.connect(lambda index, img=image ,cb=combo,spct_lbl=spectrum_label: self.handle_combobox_change(index, img,cb,spct_lbl))
 
+    for button in self.addbuttons:
+            button.clicked.connect(self.update_combobox_options)
 
 
   def handle_combobox_change(self, index,image,combo,spct_lbl ):
@@ -56,7 +57,42 @@ class FourierTransformMixer(QMainWindow):
     # self.ui.comboBox_4.currentIndexChanged.connect(lambda index: self.image_7.plot_spectrum(self.ui.comboBox.currentText(),self.ui.label_8))
     # self.ui.comboBox.currentIndexChanged.connect(  lambda index: self.handle_combobox_change(self.ui.label_2))
 
+  def update_combobox_options(self):
+      # Identify the clicked button
+      clicked_button = self.sender()
 
+      # Get the selected option from the clicked button's corresponding combobox
+      selected_option = None
+      combo_to_exclude = None
+
+      if clicked_button == self.ui.addButton:
+          selected_option = self.ui.comboBox_6.currentText()
+          combo_to_exclude = self.ui.comboBox_6
+      elif clicked_button == self.ui.addButton_2:
+          selected_option = self.ui.comboBox_7.currentText()
+          combo_to_exclude = self.ui.comboBox_7
+      elif clicked_button == self.ui.addButton_3:
+          selected_option = self.ui.comboBox_8.currentText()
+          combo_to_exclude = self.ui.comboBox_8
+      elif clicked_button == self.ui.addButton_4:
+          selected_option = self.ui.comboBox_9.currentText()
+          combo_to_exclude = self.ui.comboBox_9
+
+      # Define the possible options for each selection
+      options_mapping = {
+          "----": ["----", "Magnitude", "Phase", "Real", "Imaginary"],
+          "Magnitude": ["----","Magnitude", "Phase"],
+          "Phase": ["----","Magnitude", "Phase"],
+          "Real": ["----","Real", "Imaginary"],
+          "Imaginary": ["=---","Real", "Imaginary"]
+      }
+
+      # Update options in comboboxes, excluding the one corresponding to the clicked button
+      for combo in [self.ui.comboBox_6, self.ui.comboBox_7, self.ui.comboBox_8, self.ui.comboBox_9]:
+          if combo != combo_to_exclude:
+              combo.clear()
+              options = options_mapping[selected_option]
+              combo.addItems(options)
 
 
 if __name__ == "__main__":

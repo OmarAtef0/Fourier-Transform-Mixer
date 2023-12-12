@@ -221,11 +221,11 @@ class Ui_MainWindow(object):
         self.frame_12.setObjectName("frame_12")
         self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.frame_12)
         self.verticalLayout_8.setObjectName("verticalLayout_8")
-        self.comboBox_5 = QtWidgets.QComboBox(self.frame_12)
-        self.comboBox_5.setObjectName("comboBox_5")
-        self.comboBox_5.addItem("")
-        self.comboBox_5.addItem("")
-        self.verticalLayout_8.addWidget(self.comboBox_5)
+        self.outputBox = QtWidgets.QComboBox(self.frame_12)
+        self.outputBox.setObjectName("outputBox")
+        self.outputBox.addItem("")
+        self.outputBox.addItem("")
+        self.verticalLayout_8.addWidget(self.outputBox)
         self.frame_14 = QtWidgets.QFrame(self.frame_12)
         self.frame_14.setMaximumSize(QtCore.QSize(16777215, 80))
         self.frame_14.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -270,6 +270,20 @@ class Ui_MainWindow(object):
         self.lcdNumber.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber.setObjectName("lcdNumber")
         self.horizontalLayout_7.addWidget(self.lcdNumber)
+        self.addButton = QtWidgets.QPushButton(self.frame_14)
+        self.addButton.setStyleSheet("\n"
+"\n"
+"QPushButton {\n"
+"    background-color: rgb(0, 85, 255);\n"
+"color:rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(0, 50, 150);\n"
+"}\n"
+"")
+        self.addButton.setObjectName("addButton")
+        self.horizontalLayout_7.addWidget(self.addButton)
         self.verticalLayout_8.addWidget(self.frame_14)
         self.frame_15 = QtWidgets.QFrame(self.frame_12)
         self.frame_15.setMaximumSize(QtCore.QSize(16777215, 80))
@@ -315,6 +329,20 @@ class Ui_MainWindow(object):
         self.lcdNumber_2.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber_2.setObjectName("lcdNumber_2")
         self.horizontalLayout_8.addWidget(self.lcdNumber_2)
+        self.addButton_2 = QtWidgets.QPushButton(self.frame_15)
+        self.addButton_2.setStyleSheet("\n"
+"\n"
+"QPushButton {\n"
+"    background-color: rgb(0, 85, 255);\n"
+"color:rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(0, 50, 150);\n"
+"}\n"
+"")
+        self.addButton_2.setObjectName("addButton_2")
+        self.horizontalLayout_8.addWidget(self.addButton_2)
         self.verticalLayout_8.addWidget(self.frame_15)
         self.frame_17 = QtWidgets.QFrame(self.frame_12)
         self.frame_17.setMaximumSize(QtCore.QSize(16777215, 80))
@@ -360,6 +388,20 @@ class Ui_MainWindow(object):
         self.lcdNumber_4.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber_4.setObjectName("lcdNumber_4")
         self.horizontalLayout_10.addWidget(self.lcdNumber_4)
+        self.addButton_3 = QtWidgets.QPushButton(self.frame_17)
+        self.addButton_3.setStyleSheet("\n"
+"\n"
+"QPushButton {\n"
+"    background-color: rgb(0, 85, 255);\n"
+"color:rgb(255, 255, 255);\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(0, 50, 150);\n"
+"}\n"
+"")
+        self.addButton_3.setObjectName("addButton_3")
+        self.horizontalLayout_10.addWidget(self.addButton_3)
         self.verticalLayout_8.addWidget(self.frame_17)
         self.frame_16 = QtWidgets.QFrame(self.frame_12)
         self.frame_16.setMaximumSize(QtCore.QSize(16777215, 80))
@@ -405,24 +447,27 @@ class Ui_MainWindow(object):
         self.lcdNumber_3.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber_3.setObjectName("lcdNumber_3")
         self.horizontalLayout_9.addWidget(self.lcdNumber_3)
-        self.verticalLayout_8.addWidget(self.frame_16)
-        self.verticalLayout_9 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.pushButton = QtWidgets.QPushButton(self.frame_12)
-        self.pushButton.setStyleSheet("\n"
+        self.addButton_4 = QtWidgets.QPushButton(self.frame_16)
+        self.addButton_4.setStyleSheet("\n"
 "\n"
 "QPushButton {\n"
 "    background-color: rgb(0, 85, 255);\n"
 "color:rgb(255, 255, 255);\n"
-"border-radius: 1px;\n"
 "}\n"
 "\n"
 "QPushButton:hover {\n"
 "    background-color: rgb(0, 50, 150);\n"
 "}\n"
 "")
-        self.pushButton.setObjectName("pushButton")
-        self.verticalLayout_9.addWidget(self.pushButton)
+        self.addButton_4.setObjectName("addButton_4")
+        self.horizontalLayout_9.addWidget(self.addButton_4)
+        self.verticalLayout_8.addWidget(self.frame_16)
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.mixButton = QtWidgets.QPushButton(self.frame_12)
+        self.mixButton.setStyleSheet("border-height: 2px;")
+        self.mixButton.setObjectName("mixButton")
+        self.verticalLayout_9.addWidget(self.mixButton)
         self.verticalLayout_8.addLayout(self.verticalLayout_9)
         self.verticalLayout_6.addWidget(self.frame_12)
         self.frame_13 = QtWidgets.QFrame(self.frame_3)
@@ -515,33 +560,37 @@ class Ui_MainWindow(object):
         self.comboBox_4.setItemText(2, _translate("MainWindow", "FT Real"))
         self.comboBox_4.setItemText(3, _translate("MainWindow", "FT Imaginary"))
         self.label_8.setText(_translate("MainWindow", "TextLabel"))
-        self.comboBox_5.setItemText(0, _translate("MainWindow", "Output 1"))
-        self.comboBox_5.setItemText(1, _translate("MainWindow", "Output 2"))
+        self.outputBox.setItemText(0, _translate("MainWindow", "Output 1"))
+        self.outputBox.setItemText(1, _translate("MainWindow", "Output 2"))
         self.label_11.setText(_translate("MainWindow", "Image 1"))
         self.comboBox_6.setItemText(0, _translate("MainWindow", "----"))
         self.comboBox_6.setItemText(1, _translate("MainWindow", "Magnitude"))
         self.comboBox_6.setItemText(2, _translate("MainWindow", "Phase"))
         self.comboBox_6.setItemText(3, _translate("MainWindow", "Real"))
         self.comboBox_6.setItemText(4, _translate("MainWindow", "Imaginary"))
+        self.addButton.setText(_translate("MainWindow", "Add"))
         self.label_12.setText(_translate("MainWindow", "Image 2"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "----"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Magnitude"))
         self.comboBox_7.setItemText(2, _translate("MainWindow", "Phase"))
         self.comboBox_7.setItemText(3, _translate("MainWindow", "Real"))
         self.comboBox_7.setItemText(4, _translate("MainWindow", "Imaginary"))
+        self.addButton_2.setText(_translate("MainWindow", "Add"))
         self.label_14.setText(_translate("MainWindow", "Image 3"))
         self.comboBox_8.setItemText(0, _translate("MainWindow", "----"))
         self.comboBox_8.setItemText(1, _translate("MainWindow", "Magnitude"))
         self.comboBox_8.setItemText(2, _translate("MainWindow", "Phase"))
         self.comboBox_8.setItemText(3, _translate("MainWindow", "Real"))
         self.comboBox_8.setItemText(4, _translate("MainWindow", "Imaginary"))
+        self.addButton_3.setText(_translate("MainWindow", "Add"))
         self.label_13.setText(_translate("MainWindow", "Image 4"))
         self.comboBox_9.setItemText(0, _translate("MainWindow", "----"))
         self.comboBox_9.setItemText(1, _translate("MainWindow", "Magnitude"))
         self.comboBox_9.setItemText(2, _translate("MainWindow", "Phase"))
         self.comboBox_9.setItemText(3, _translate("MainWindow", "Real"))
         self.comboBox_9.setItemText(4, _translate("MainWindow", "Imaginary"))
-        self.pushButton.setText(_translate("MainWindow", "Mix"))
+        self.addButton_4.setText(_translate("MainWindow", "Add"))
+        self.mixButton.setText(_translate("MainWindow", "Mix"))
         self.label_9.setText(_translate("MainWindow", "TextLabel"))
         self.label_10.setText(_translate("MainWindow", "TextLabel"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
