@@ -5,11 +5,14 @@ from PyQt5.QtGui import QImageReader, QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QLabel
 
 class Image():
+    #Global Variables
     image_instances = []
     initial_width = 320
     initial_height = 200
-
+    ID =0
     def __init__(self):
+        self.id = Image.ID
+        Image.ID +=1
         self.path = None
         self.original_img = None  # Store the original image data (NumPy array)
         self.img = None  # for display only
@@ -178,12 +181,11 @@ class Image():
                         "FT Imaginary": self.fft_components[3] }
 
 
-        ####### M7taga layout bta3 el osadha ######
         if show: 
             # Plot the magnitude spectrum by default
             self.plot_spectrum("FT Magnitude", spectrum_label) 
 
-    def plot_spectrum(self, spectrum_type,spectrum_label):
+    def plot_spectrum(self, spectrum_type, spectrum_label):
         """
         Plot the selected spectrum type.
 
@@ -194,16 +196,25 @@ class Image():
         - None
         """
         if spectrum_type in self.fft_dict:
-            
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
             print(f"The type is {spectrum_type} and its values are: {spectrum} ,its shape is: {spectrum.shape}")
-            # Convert to bytes
-            spectrum_bytes = spectrum.tobytes()
+
+            # Check for NaN values
+            if np.isnan(spectrum).any():
+                print(f"Error: Spectrum type '{spectrum_type}' contains NaN values.")
+                spectrum = np.zeros_like(spectrum)  # Set to black image in case of NaN values
+
+            # Normalize the spectrum values to be between 0 and 255
+
+            # spectrum_normalized = cv2.normalize(spectrum , None,0 , 255,cv2.NORM_MINMAX) ---> Same result
+            spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8)
+
+            # Convert to bytes using NumPy functions
+            spectrum_bytes = spectrum_normalized.tobytes()
 
             # Convert to QImage
-            bytes_per_line = 1 * spectrum.shape[1]
-            q_image = QImage(spectrum_bytes, spectrum.shape[1], spectrum.shape[0], bytes_per_line, QImage.Format_Grayscale8)
+            q_image = QImage(spectrum_bytes, spectrum.shape[1], spectrum.shape[0], spectrum.shape[1], QImage.Format_Grayscale8)
 
             # Set the image in the QLabel
             spectrum_label.setPixmap(QPixmap.fromImage(q_image))
