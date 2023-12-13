@@ -73,7 +73,7 @@
                 </sizepolicy>
                </property>
                <property name="styleSheet">
-                <string notr="true">background-color: rgb(207, 207, 207);
+                <string notr="true">background-color:black;
 font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
@@ -422,6 +422,20 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
               </widget>
              </item>
              <item>
+              <widget class="QComboBox" name="modeCombo">
+               <item>
+                <property name="text">
+                 <string>Mag/Phase</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>Real/Imag</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item>
               <widget class="QFrame" name="frame_14">
                <property name="maximumSize">
                 <size>
@@ -447,27 +461,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  <widget class="QComboBox" name="comboBox_6">
                   <item>
                    <property name="text">
-                    <string>----</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
                     <string>Magnitude</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
                     <string>Phase</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Real</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -496,10 +495,13 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <number>0</number>
                   </property>
                   <property name="maximum">
-                   <number>100</number>
+                   <number>1</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>0</number>
                   </property>
                   <property name="value">
-                   <number>4</number>
+                   <number>0</number>
                   </property>
                   <property name="tracking">
                    <bool>true</bool>
@@ -528,26 +530,6 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                     <width>50</width>
                     <height>25</height>
                    </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="addButton">
-                  <property name="styleSheet">
-                   <string notr="true">
-
-QPushButton {
-    background-color: rgb(0, 85, 255);
-color:rgb(255, 255, 255);
-}
-
-QPushButton:hover {
-    background-color: rgb(0, 50, 150);
-}
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Add</string>
                   </property>
                  </widget>
                 </item>
@@ -580,27 +562,12 @@ QPushButton:hover {
                  <widget class="QComboBox" name="comboBox_7">
                   <item>
                    <property name="text">
-                    <string>----</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
                     <string>Magnitude</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
                     <string>Phase</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Real</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -626,13 +593,13 @@ QPushButton:hover {
                    </size>
                   </property>
                   <property name="minimum">
-                   <number>1</number>
+                   <number>0</number>
                   </property>
                   <property name="maximum">
                    <number>100</number>
                   </property>
                   <property name="value">
-                   <number>4</number>
+                   <number>0</number>
                   </property>
                   <property name="tracking">
                    <bool>true</bool>
@@ -661,26 +628,6 @@ QPushButton:hover {
                     <width>50</width>
                     <height>25</height>
                    </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="addButton_2">
-                  <property name="styleSheet">
-                   <string notr="true">
-
-QPushButton {
-    background-color: rgb(0, 85, 255);
-color:rgb(255, 255, 255);
-}
-
-QPushButton:hover {
-    background-color: rgb(0, 50, 150);
-}
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Add</string>
                   </property>
                  </widget>
                 </item>
@@ -713,27 +660,12 @@ QPushButton:hover {
                  <widget class="QComboBox" name="comboBox_8">
                   <item>
                    <property name="text">
-                    <string>----</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
                     <string>Magnitude</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
                     <string>Phase</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Real</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -759,13 +691,13 @@ QPushButton:hover {
                    </size>
                   </property>
                   <property name="minimum">
-                   <number>1</number>
+                   <number>0</number>
                   </property>
                   <property name="maximum">
                    <number>100</number>
                   </property>
                   <property name="value">
-                   <number>4</number>
+                   <number>0</number>
                   </property>
                   <property name="tracking">
                    <bool>true</bool>
@@ -794,26 +726,6 @@ QPushButton:hover {
                     <width>50</width>
                     <height>25</height>
                    </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="addButton_3">
-                  <property name="styleSheet">
-                   <string notr="true">
-
-QPushButton {
-    background-color: rgb(0, 85, 255);
-color:rgb(255, 255, 255);
-}
-
-QPushButton:hover {
-    background-color: rgb(0, 50, 150);
-}
-</string>
-                  </property>
-                  <property name="text">
-                   <string>Add</string>
                   </property>
                  </widget>
                 </item>
@@ -846,27 +758,12 @@ QPushButton:hover {
                  <widget class="QComboBox" name="comboBox_9">
                   <item>
                    <property name="text">
-                    <string>----</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
                     <string>Magnitude</string>
                    </property>
                   </item>
                   <item>
                    <property name="text">
                     <string>Phase</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Real</string>
-                   </property>
-                  </item>
-                  <item>
-                   <property name="text">
-                    <string>Imaginary</string>
                    </property>
                   </item>
                  </widget>
@@ -892,13 +789,13 @@ QPushButton:hover {
                    </size>
                   </property>
                   <property name="minimum">
-                   <number>1</number>
+                   <number>0</number>
                   </property>
                   <property name="maximum">
                    <number>100</number>
                   </property>
                   <property name="value">
-                   <number>4</number>
+                   <number>0</number>
                   </property>
                   <property name="tracking">
                    <bool>true</bool>
@@ -930,10 +827,15 @@ QPushButton:hover {
                   </property>
                  </widget>
                 </item>
-                <item>
-                 <widget class="QPushButton" name="addButton_4">
-                  <property name="styleSheet">
-                   <string notr="true">
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <item>
+                <widget class="QPushButton" name="mixButton">
+                 <property name="styleSheet">
+                  <string notr="true">
 
 QPushButton {
     background-color: rgb(0, 85, 255);
@@ -944,21 +846,6 @@ QPushButton:hover {
     background-color: rgb(0, 50, 150);
 }
 </string>
-                  </property>
-                  <property name="text">
-                   <string>Add</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_9">
-               <item>
-                <widget class="QPushButton" name="mixButton">
-                 <property name="styleSheet">
-                  <string notr="true">border-height: 2px;</string>
                  </property>
                  <property name="text">
                   <string>Mix</string>
@@ -980,7 +867,7 @@ QPushButton:hover {
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_7">
              <item>
-              <widget class="QLabel" name="label_9">
+              <widget class="QLabel" name="outputlabel">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(207, 207, 207);
 font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
@@ -991,7 +878,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_10">
+              <widget class="QLabel" name="outputlabel_2">
                <property name="styleSheet">
                 <string notr="true">background-color: rgb(207, 207, 207);
 font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>

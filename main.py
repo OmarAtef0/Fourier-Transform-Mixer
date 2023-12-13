@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PyQt5.QtGui import QIcon
 from task4 import Ui_MainWindow
 from image import Image
+from mixer import Mixer
+
 
 class FourierTransformMixer(QMainWindow):
   
@@ -13,21 +15,37 @@ class FourierTransformMixer(QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)  
     
+    self.speed_sliders= [self.ui.speed_slider,self.ui.speed_slider_2,self.ui.speed_slider_3,self.ui.speed_slider_4]
+    self.combos_input = [self.ui.comboBox, self.ui.comboBox_2, self.ui.comboBox_3, self.ui.comboBox_4]
+    self.combos_output = [self.ui.comboBox_6, self.ui.comboBox_7, self.ui.comboBox_8, self.ui.comboBox_9]
+    self.labels = [self.ui.label_1, self.ui.label_3, self.ui.label_5, self.ui.label_7]
+    self.spectrum_labels = [self.ui.label_2, self.ui.label_4, self.ui.label_6, self.ui.label_8]
+    self.output_labels = [self.ui.outputlabel, self.ui.outputlabel_2]
+    # Connect LCDNumber widgets to weights
+    self.lcd_numbers = [self.ui.lcdNumber, self.ui.lcdNumber_2, self.ui.lcdNumber_3, self.ui.lcdNumber_4]
+
+    for i, weight_lcd in enumerate(self.lcd_numbers):
+        weight_lcd.display(self.speed_sliders[i].value())
+
+    for slider, weight_lcd in zip(self.speed_sliders, self.lcd_numbers):
+        slider.valueChanged.connect(weight_lcd.display)
+
     self.images = [Image() for _ in range(4)]
-    self.addbuttons = [self.ui.addButton,self.ui.addButton_2,self.ui.addButton_3,self.ui.addButton_4 ]
-    labels = [self.ui.label_1, self.ui.label_3, self.ui.label_5, self.ui.label_7]
-    spectrum_labels = [self.ui.label_2, self.ui.label_4, self.ui.label_6, self.ui.label_8]
-    combos = [self.ui.comboBox, self.ui.comboBox_2, self.ui.comboBox_3, self.ui.comboBox_4]
+    self.mixer  = Mixer(self.images,self.ui,self.combos_output,output_labels=self.output_labels)
 
+    for speed_slider in self.speed_sliders:
+        speed_slider.valueChanged.connect(self.set_weights)
+        
 
-    for label, spectrum_label, image in zip(labels, spectrum_labels, self.images):
+    for label, spectrum_label, image in zip(self.labels, self.spectrum_labels, self.images):
         label.mouseDoubleClickEvent = lambda event, img=image, lbl1=label, lbl2=spectrum_label: img.browse_file(lbl1, lbl2)
 
-    for combo, spectrum_label, image in zip(combos, spectrum_labels, self.images):
+    for combo, spectrum_label, image in zip(self.combos_input, self.spectrum_labels, self.images):
       combo.currentIndexChanged.connect(lambda index, img=image ,cb=combo,spct_lbl=spectrum_label: self.handle_combobox_change(index, img,cb,spct_lbl))
 
-    for button in self.addbuttons:
-            button.clicked.connect(self.update_combobox_options)
+
+    self.ui.modeCombo.currentIndexChanged.connect(self.update_combobox_options)
+    self.ui.mixButton.clicked.connect(self.mixer.mix_images)
 
 
   def handle_combobox_change(self, index,image,combo,spct_lbl ):
@@ -37,64 +55,35 @@ class FourierTransformMixer(QMainWindow):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
-    # self.ui.comboBox.currentIndexChanged.connect(self.handle_combobox_change)
-
-    # def handle_combobox_change(self, index):
-    #     try:
-    #         spectrum_type = self.ui.comboBox.currentText()
-    #         self.images[0].plot_spectrum(spectrum_type)
-    #     except Exception as e:
-    #         print(f"An error occurred: {str(e)}")
-
-    # self.ui.label_1.mouseDoubleClickEvent = lambda event: self.image_1.browse_file(self.ui.label_1,self.ui.label_2)
-    # self.ui.label_3.mouseDoubleClickEvent = lambda event: self.image_3.browse_file(self.ui.label_3,self.ui.label_4)
-    # self.ui.label_5.mouseDoubleClickEvent = lambda event: self.image_5.browse_file(self.ui.label_5,self.ui.label_6)
-    # self.ui.label_7.mouseDoubleClickEvent = lambda event: self.image_7.browse_file(self.ui.label_7,self.ui.label_8)
-
-
-    # self.ui.comboBox_2.currentIndexChanged.connect(lambda index: self.image_3.plot_spectrum(self.ui.comboBox.currentText(),self.ui.label_4))
-    # self.ui.comboBox_3.currentIndexChanged.connect(lambda index: self.image_5.plot_spectrum(self.ui.comboBox.currentText(),self.ui.label_6))
-    # self.ui.comboBox_4.currentIndexChanged.connect(lambda index: self.image_7.plot_spectrum(self.ui.comboBox.currentText(),self.ui.label_8))
-    # self.ui.comboBox.currentIndexChanged.connect(  lambda index: self.handle_combobox_change(self.ui.label_2))
 
   def update_combobox_options(self):
       # Identify the clicked button
-      clicked_button = self.sender()
+      mode_button = self.ui.modeCombo.currentText()
 
-      # Get the selected option from the clicked button's corresponding combobox
       selected_option = None
-      combo_to_exclude = None
 
-      if clicked_button == self.addbuttons[0]:
-          selected_option = self.ui.comboBox_6.currentText()
-          combo_to_exclude = self.ui.comboBox_6
-      elif clicked_button == self.addbuttons[1]:
-          selected_option = self.ui.comboBox_7.currentText()
-          combo_to_exclude = self.ui.comboBox_7
-      elif clicked_button == self.addbuttons[2]:
-          selected_option = self.ui.comboBox_8.currentText()
-          combo_to_exclude = self.ui.comboBox_8
-      elif clicked_button == self.addbuttons[3]:
-          selected_option = self.ui.comboBox_9.currentText()
-          combo_to_exclude = self.ui.comboBox_9
+      if mode_button == "Mag/Phase":
+          selected_option = mode_button
+      elif mode_button == "Real/Imag":
+          selected_option = mode_button
+
 
       # Define the possible options for each selection
-      options_mapping = {
-          "----": ["----", "Magnitude", "Phase", "Real", "Imaginary"],
-          "Magnitude": ["----","Magnitude", "Phase"],
-          "Phase": ["----","Magnitude", "Phase"],
-          "Real": ["----","Real", "Imaginary"],
-          "Imaginary": ["=---","Real", "Imaginary"]
+      options_mapping = {  
+          "Mag/Phase": ["----","Magnitude", "Phase"],
+          "Real/Imag": ["----","Real", "Imaginary"], 
       }
 
       # Update options in comboboxes, excluding the one corresponding to the clicked button
       for combo in [self.ui.comboBox_6, self.ui.comboBox_7, self.ui.comboBox_8, self.ui.comboBox_9]:
-          if combo != combo_to_exclude:
               combo.clear()
               options = options_mapping[selected_option]
               combo.addItems(options)
-
-
+   
+  def set_weights(self):
+        weights = [slider.value() for slider in self.speed_sliders]
+        self.mixer.set_weights(weights)
+    
 if __name__ == "__main__":
   app = QApplication(sys.argv)
   window = FourierTransformMixer()
