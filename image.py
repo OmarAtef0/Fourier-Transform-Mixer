@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PyQt5.QtGui import QImageReader, QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QLabel
+from PyQt5 import QtCore
 
 class Image():
     #Global Variables
@@ -86,6 +87,7 @@ class Image():
         if self.img is not None:
             # Set the pixmap only if the image is not None
             label.setPixmap(self.img)
+            label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
 
     def reshape(self, img_height, img_width):
@@ -198,7 +200,7 @@ class Image():
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
-            print(f"The type is {spectrum_type} and its values are: {spectrum[0][:10]} ,its shape is: {spectrum.shape}")
+            print(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]} ,its shape is: {spectrum.shape}")
 
             # Check for NaN values
             if np.isnan(spectrum).any():
@@ -207,8 +209,8 @@ class Image():
 
             # Normalize the spectrum values to be between 0 and 255
 
-            # spectrum_normalized = cv2.normalize(spectrum , None,0 , 255,cv2.NORM_MINMAX) ---> Same approach,Same result
-            spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8)
+            spectrum_normalized = cv2.normalize(spectrum , None,0 , 255,cv2.NORM_MINMAX) 
+            # spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) ---> Same approach,Same result
 
             # Convert to bytes using NumPy functions
             spectrum_bytes = spectrum_normalized.tobytes()
@@ -218,5 +220,36 @@ class Image():
 
             # Set the image in the QLabel
             spectrum_label.setPixmap(QPixmap.fromImage(q_image))
+            spectrum_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         else:
             print(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
+
+
+    def change_brightness(self, brightness_factor):
+          
+        # Change the brightness of the image
+        print(f'Brightness Factor: {brightness_factor}')
+        self.original_img = np.clip(self.original_img + brightness_factor, 0, 255).astype(np.uint8)
+        # Update Fourier Transform components and display
+        self.compute_fourier_transform(self.spectrum_label)
+        self.img = self.qimage_from_numpy(self.original_img)
+        self.display_image(self.label)
+        # Update the QPixmap
+
+    def change_contrast(self, contrast_factor):
+
+        
+        print(f'Contrast Factor: {contrast_factor}')
+        # Change the contrast of the image
+        self.original_img = np.clip(self.original_img * contrast_factor, 0, 255).astype(np.uint8)
+        # Update Fourier Transform components and display
+        self.compute_fourier_transform(self.spectrum_label)
+        self.img = self.qimage_from_numpy(self.original_img)
+        self.display_image(self.label)
+        # Update the QPixmap
+
+    def qimage_from_numpy(self, numpy_array):
+        height, width = numpy_array.shape
+        bytes_per_line = width
+        q_image = QImage(numpy_array.data, width, height, bytes_per_line, QImage.Format_Grayscale8)
+        return QPixmap.fromImage(q_image)

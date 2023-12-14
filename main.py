@@ -1,12 +1,18 @@
 import sys
 import cv2
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
-from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QIcon, QMouseEvent
 from task4 import Ui_MainWindow
 from image import Image
 from mixer import Mixer
 
-
+'''WHATS NEEDED:
+1-Fix the reshape image function
+2-Add contrast to all images "It works on first image only"
+3-Add the rectangle feature to take a part of image
+4- Refactoring to add functions to new class instead of Main class 
+'''
 class FourierTransformMixer(QMainWindow):
   
   def __init__(self):
@@ -23,6 +29,15 @@ class FourierTransformMixer(QMainWindow):
     self.output_labels = [self.ui.outputlabel, self.ui.outputlabel_2]
     # Connect LCDNumber widgets to weights
     self.lcd_numbers = [self.ui.lcdNumber, self.ui.lcdNumber_2, self.ui.lcdNumber_3, self.ui.lcdNumber_4]
+
+     # Connect mouse events for brightness and contrast adjustment
+    self.ui.label_1.mousePressEvent = self.on_mouse_press
+    self.ui.label_1.mouseMoveEvent = self.on_mouse_move
+    self.ui.label_1.mouseReleaseEvent = self.on_mouse_release
+    self.x = None
+    self.y = None
+    self.mouse_pressed = False
+    self.brightness_accumulated, self.contrast_accumulated = 0,0
 
     for i, weight_lcd in enumerate(self.lcd_numbers):
         weight_lcd.display(self.speed_sliders[i].value())
@@ -83,6 +98,65 @@ class FourierTransformMixer(QMainWindow):
   def set_weights(self):
         weights = [slider.value() for slider in self.speed_sliders]
         self.mixer.set_weights(weights)
+
+  def on_mouse_press(self, event: QMouseEvent):
+    if (
+        event.button() == Qt.MouseButton.LeftButton
+        and self.ui.label_1.geometry().contains(event.pos())
+    ):
+        self.mouse_pressed = True
+        self.initial_pos = event.pos()
+
+
+  def on_mouse_move(self, event: QMouseEvent):
+    if self.mouse_pressed:
+        self.track_mouse_position(event)
+
+        # Adjust brightness based on horizontal movement
+        brightness_factor = self.brightness_accumulated
+        # Adjust contrast based on vertical movement
+        contrast_factor = self.contrast_accumulated
+
+        # Apply the accumulated factors to the image
+        self.images[0].change_brightness(brightness_factor)
+        self.images[0].change_contrast(1.0 + contrast_factor)
+
+        # Reset accumulated factors
+        self.brightness_accumulated = 0.0
+        self.contrast_accumulated = 0.0
+
+
+  def on_mouse_release(self, event: QMouseEvent):
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.mouse_pressed = False
+
+  def track_mouse_position(self, event: QMouseEvent):
+        # Track mouse position when clicking and holding
+        crrX, crrY = event.pos().x(), event.pos().y()
+        if self.x is None:
+            self.x = crrX
+            self.y = crrY
+        else:
+            # Calculate movement in x and y directions
+            dx = crrX - self.x
+            dy = crrY - self.y
+
+            # Controls Sensitivity
+            margin = 10
+
+            if abs(dx) > margin :
+                # Adjust brightness based on horizontal movement
+                brightness_factor = dx / 50.0
+                self.brightness_accumulated += brightness_factor
+                self.x = crrX
+            if abs(dy) > margin:
+                # Adjust contrast based on vertical movement
+                contrast_factor = dy / 50.0
+                self.contrast_accumulated += contrast_factor
+                self.y = crrY
+            
+            
+
     
 if __name__ == "__main__":
   app = QApplication(sys.argv)

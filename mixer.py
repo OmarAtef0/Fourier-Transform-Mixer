@@ -3,9 +3,10 @@ import cv2
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtGui import QImage, QPixmap
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import  QMessageBox
 
-class Mixer:
+class Mixer():
     def __init__(self, images,ui,combo_output,output_labels):
         self.images = images
         self.weights = []
@@ -80,11 +81,13 @@ class Mixer:
         if output_label_combo.currentText() == "Output 1":
             pixmap = QPixmap.fromImage(q_image)
             output_label[0].setPixmap(pixmap)
+            output_label[0].setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
             
         elif output_label_combo.currentText() == "Output 2":
             pixmap = QPixmap.fromImage(q_image)
             output_label[1].setPixmap(pixmap)
+            output_label[1].setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
         #Matplotlib integerating bs morhaq
             # self.fig, self.ax = plt.subplots()
