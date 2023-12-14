@@ -47,7 +47,7 @@ class Image():
     def load_image(self, path, label ,show=True):
         try:
             # Read and convert the image
-            self.original_img = cv2.imread(path, cv2.IMREAD_GRAYSCALE).astype(np.float32)
+            self.original_img = cv2.imread(path, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
             self.label = label
             self.reshape(self.original_img.shape[0], self.original_img.shape[1])
             self.reshape_all()
@@ -168,7 +168,7 @@ class Image():
         self.imag_shifted = np.imag(self.fft_shift)
 
         # Compute the components of the shifted Fourier Transform
-        self.fft_components= [np.multiply(np.log(self.mag_shifted+1),20)
+        self.fft_components= [np.multiply(np.log(self.mag_shifted+1),20) 
                              , self.phase_shifted
                             , self.real_shifted ,
                               self.imag_shifted]
@@ -198,7 +198,7 @@ class Image():
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
-            print(f"The type is {spectrum_type} and its values are: {spectrum} ,its shape is: {spectrum.shape}")
+            print(f"The type is {spectrum_type} and its values are: {spectrum[0][:10]} ,its shape is: {spectrum.shape}")
 
             # Check for NaN values
             if np.isnan(spectrum).any():

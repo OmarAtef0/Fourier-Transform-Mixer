@@ -58,8 +58,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_1.sizePolicy().hasHeightForWidth())
         self.label_1.setSizePolicy(sizePolicy)
-        self.label_1.setStyleSheet("background-color:black;\n"
-"font: 75 9pt \"MS Shell Dlg 2\";")
+        self.label_1.setStyleSheet("")
         self.label_1.setObjectName("label_1")
         self.horizontalLayout_3.addWidget(self.label_1)
         self.frame_5 = QtWidgets.QFrame(self.frame_4)
@@ -81,7 +80,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
         self.label_2.setSizePolicy(sizePolicy)
-        self.label_2.setStyleSheet("background-color: rgb(207, 207, 207);")
+        self.label_2.setStyleSheet("")
         self.label_2.setObjectName("label_2")
         self.verticalLayout_2.addWidget(self.label_2)
         self.horizontalLayout_3.addWidget(self.frame_5)
@@ -98,7 +97,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
         self.label_3.setSizePolicy(sizePolicy)
-        self.label_3.setStyleSheet("background-color: rgb(207, 207, 207);\n"
+        self.label_3.setStyleSheet("\n"
 "font: 75 9pt \"MS Shell Dlg 2\";")
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_4.addWidget(self.label_3)
@@ -121,7 +120,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
         self.label_4.setSizePolicy(sizePolicy)
-        self.label_4.setStyleSheet("background-color: rgb(207, 207, 207);\n"
+        self.label_4.setStyleSheet("\n"
 "")
         self.label_4.setObjectName("label_4")
         self.verticalLayout_3.addWidget(self.label_4)
@@ -139,7 +138,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
         self.label_5.setSizePolicy(sizePolicy)
-        self.label_5.setStyleSheet("background-color: rgb(207, 207, 207);\n"
+        self.label_5.setStyleSheet("\n"
 "font: 75 9pt \"MS Shell Dlg 2\";")
         self.label_5.setObjectName("label_5")
         self.horizontalLayout_5.addWidget(self.label_5)
@@ -162,7 +161,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_6.sizePolicy().hasHeightForWidth())
         self.label_6.setSizePolicy(sizePolicy)
-        self.label_6.setStyleSheet("background-color: rgb(207, 207, 207);")
+        self.label_6.setStyleSheet("")
         self.label_6.setObjectName("label_6")
         self.verticalLayout_4.addWidget(self.label_6)
         self.horizontalLayout_5.addWidget(self.frame_9)
@@ -179,7 +178,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
         self.label_7.setSizePolicy(sizePolicy)
-        self.label_7.setStyleSheet("background-color: rgb(207, 207, 207);\n"
+        self.label_7.setStyleSheet("\n"
 "font: 75 9pt \"MS Shell Dlg 2\";")
         self.label_7.setObjectName("label_7")
         self.horizontalLayout_6.addWidget(self.label_7)
@@ -202,7 +201,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
         self.label_8.setSizePolicy(sizePolicy)
-        self.label_8.setStyleSheet("background-color: rgb(207, 207, 207);")
+        self.label_8.setStyleSheet("")
         self.label_8.setObjectName("label_8")
         self.verticalLayout_5.addWidget(self.label_8)
         self.horizontalLayout_6.addWidget(self.frame_11)
@@ -256,6 +255,7 @@ class Ui_MainWindow(object):
         self.speed_slider.setMaximumSize(QtCore.QSize(16777215, 16777215))
         self.speed_slider.setMinimum(0)
         self.speed_slider.setMaximum(100)
+        self.speed_slider.setSingleStep(1)
         self.speed_slider.setProperty("value", 0)
         self.speed_slider.setTracking(True)
         self.speed_slider.setOrientation(QtCore.Qt.Horizontal)
@@ -272,20 +272,6 @@ class Ui_MainWindow(object):
         self.lcdNumber.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber.setObjectName("lcdNumber")
         self.horizontalLayout_7.addWidget(self.lcdNumber)
-        self.addButton = QtWidgets.QPushButton(self.frame_14)
-        self.addButton.setStyleSheet("\n"
-"\n"
-"QPushButton {\n"
-"    background-color: rgb(0, 85, 255);\n"
-"color:rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: rgb(0, 50, 150);\n"
-"}\n"
-"")
-        self.addButton.setObjectName("addButton")
-        self.horizontalLayout_7.addWidget(self.addButton)
         self.verticalLayout_8.addWidget(self.frame_14)
         self.frame_15 = QtWidgets.QFrame(self.frame_12)
         self.frame_15.setMaximumSize(QtCore.QSize(16777215, 80))
@@ -328,20 +314,6 @@ class Ui_MainWindow(object):
         self.lcdNumber_2.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber_2.setObjectName("lcdNumber_2")
         self.horizontalLayout_8.addWidget(self.lcdNumber_2)
-        self.addButton_2 = QtWidgets.QPushButton(self.frame_15)
-        self.addButton_2.setStyleSheet("\n"
-"\n"
-"QPushButton {\n"
-"    background-color: rgb(0, 85, 255);\n"
-"color:rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: rgb(0, 50, 150);\n"
-"}\n"
-"")
-        self.addButton_2.setObjectName("addButton_2")
-        self.horizontalLayout_8.addWidget(self.addButton_2)
         self.verticalLayout_8.addWidget(self.frame_15)
         self.frame_17 = QtWidgets.QFrame(self.frame_12)
         self.frame_17.setMaximumSize(QtCore.QSize(16777215, 80))
@@ -384,20 +356,6 @@ class Ui_MainWindow(object):
         self.lcdNumber_4.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber_4.setObjectName("lcdNumber_4")
         self.horizontalLayout_10.addWidget(self.lcdNumber_4)
-        self.addButton_3 = QtWidgets.QPushButton(self.frame_17)
-        self.addButton_3.setStyleSheet("\n"
-"\n"
-"QPushButton {\n"
-"    background-color: rgb(0, 85, 255);\n"
-"color:rgb(255, 255, 255);\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: rgb(0, 50, 150);\n"
-"}\n"
-"")
-        self.addButton_3.setObjectName("addButton_3")
-        self.horizontalLayout_10.addWidget(self.addButton_3)
         self.verticalLayout_8.addWidget(self.frame_17)
         self.frame_16 = QtWidgets.QFrame(self.frame_12)
         self.frame_16.setMaximumSize(QtCore.QSize(16777215, 80))
@@ -440,8 +398,11 @@ class Ui_MainWindow(object):
         self.lcdNumber_3.setMaximumSize(QtCore.QSize(50, 25))
         self.lcdNumber_3.setObjectName("lcdNumber_3")
         self.horizontalLayout_9.addWidget(self.lcdNumber_3)
-        self.addButton_4 = QtWidgets.QPushButton(self.frame_16)
-        self.addButton_4.setStyleSheet("\n"
+        self.verticalLayout_8.addWidget(self.frame_16)
+        self.verticalLayout_9 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_9.setObjectName("verticalLayout_9")
+        self.mixButton = QtWidgets.QPushButton(self.frame_12)
+        self.mixButton.setStyleSheet("\n"
 "\n"
 "QPushButton {\n"
 "    background-color: rgb(0, 85, 255);\n"
@@ -452,13 +413,6 @@ class Ui_MainWindow(object):
 "    background-color: rgb(0, 50, 150);\n"
 "}\n"
 "")
-        self.addButton_4.setObjectName("addButton_4")
-        self.horizontalLayout_9.addWidget(self.addButton_4)
-        self.verticalLayout_8.addWidget(self.frame_16)
-        self.verticalLayout_9 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_9.setObjectName("verticalLayout_9")
-        self.mixButton = QtWidgets.QPushButton(self.frame_12)
-        self.mixButton.setStyleSheet("border-height: 2px;")
         self.mixButton.setObjectName("mixButton")
         self.verticalLayout_9.addWidget(self.mixButton)
         self.verticalLayout_8.addLayout(self.verticalLayout_9)
@@ -470,12 +424,12 @@ class Ui_MainWindow(object):
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.frame_13)
         self.verticalLayout_7.setObjectName("verticalLayout_7")
         self.outputlabel = QtWidgets.QLabel(self.frame_13)
-        self.outputlabel.setStyleSheet("background-color: rgb(207, 207, 207);\n"
+        self.outputlabel.setStyleSheet("\n"
 "font: 75 9pt \"MS Shell Dlg 2\";")
         self.outputlabel.setObjectName("outputlabel")
         self.verticalLayout_7.addWidget(self.outputlabel)
         self.outputlabel_2 = QtWidgets.QLabel(self.frame_13)
-        self.outputlabel_2.setStyleSheet("background-color: rgb(207, 207, 207);\n"
+        self.outputlabel_2.setStyleSheet("\n"
 "font: 75 9pt \"MS Shell Dlg 2\";")
         self.outputlabel_2.setObjectName("outputlabel_2")
         self.verticalLayout_7.addWidget(self.outputlabel_2)
@@ -560,19 +514,15 @@ class Ui_MainWindow(object):
         self.label_11.setText(_translate("MainWindow", "Image 1"))
         self.comboBox_6.setItemText(0, _translate("MainWindow", "Magnitude"))
         self.comboBox_6.setItemText(1, _translate("MainWindow", "Phase"))
-        self.addButton.setText(_translate("MainWindow", "Add"))
         self.label_12.setText(_translate("MainWindow", "Image 2"))
         self.comboBox_7.setItemText(0, _translate("MainWindow", "Magnitude"))
         self.comboBox_7.setItemText(1, _translate("MainWindow", "Phase"))
-        self.addButton_2.setText(_translate("MainWindow", "Add"))
         self.label_14.setText(_translate("MainWindow", "Image 3"))
         self.comboBox_8.setItemText(0, _translate("MainWindow", "Magnitude"))
         self.comboBox_8.setItemText(1, _translate("MainWindow", "Phase"))
-        self.addButton_3.setText(_translate("MainWindow", "Add"))
         self.label_13.setText(_translate("MainWindow", "Image 4"))
         self.comboBox_9.setItemText(0, _translate("MainWindow", "Magnitude"))
         self.comboBox_9.setItemText(1, _translate("MainWindow", "Phase"))
-        self.addButton_4.setText(_translate("MainWindow", "Add"))
         self.mixButton.setText(_translate("MainWindow", "Mix"))
         self.outputlabel.setText(_translate("MainWindow", "TextLabel"))
         self.outputlabel_2.setText(_translate("MainWindow", "TextLabel"))

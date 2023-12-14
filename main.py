@@ -70,8 +70,8 @@ class FourierTransformMixer(QMainWindow):
 
       # Define the possible options for each selection
       options_mapping = {  
-          "Mag/Phase": ["----","Magnitude", "Phase"],
-          "Real/Imag": ["----","Real", "Imaginary"], 
+          "Mag/Phase": ["Magnitude", "Phase"],
+          "Real/Imag": ["Real", "Imaginary"], 
       }
 
       # Update options in comboboxes, excluding the one corresponding to the clicked button
