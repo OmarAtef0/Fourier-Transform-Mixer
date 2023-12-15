@@ -215,8 +215,8 @@ class Image():
 
             # Normalize the spectrum values to be between 0 and 255
 
-            spectrum_normalized = cv2.normalize(spectrum, None, 0, 255, cv2.NORM_MINMAX) 
-            # spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) ---> Same approach,Same result
+            # spectrum_normalized = cv2.normalize(spectrum, None, 0, 255, cv2.NORM_MINMAX) 
+            spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) 
 
             # Convert to bytes using NumPy functions
             spectrum_bytes = spectrum_normalized.tobytes()
