@@ -41,5 +41,5 @@ def plot_image_properties(image):
     plt.show()
 
 # Example usage with a random image (replace this with your image)
-your_image = cv2.imread("C:/Users/khale/Desktop/test1.jpg", cv2.IMREAD_GRAYSCALE)
+your_image = cv2.imread("assets/img_2.jpg", cv2.IMREAD_GRAYSCALE)
 plot_image_properties(your_image)

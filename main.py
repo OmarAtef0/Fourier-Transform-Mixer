@@ -21,7 +21,7 @@ class FourierTransformMixer(QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)  
     
-    self.speed_sliders= [self.ui.speed_slider,self.ui.speed_slider_2,self.ui.speed_slider_3,self.ui.speed_slider_4]
+    self.speed_sliders= [self.ui.speed_slider, self.ui.speed_slider_2, self.ui.speed_slider_3, self.ui.speed_slider_4]
     self.combos_input = [self.ui.comboBox, self.ui.comboBox_2, self.ui.comboBox_3, self.ui.comboBox_4]
     self.combos_output = [self.ui.comboBox_6, self.ui.comboBox_7, self.ui.comboBox_8, self.ui.comboBox_9]
     self.labels = [self.ui.label_1, self.ui.label_3, self.ui.label_5, self.ui.label_7]
@@ -30,7 +30,7 @@ class FourierTransformMixer(QMainWindow):
     # Connect LCDNumber widgets to weights
     self.lcd_numbers = [self.ui.lcdNumber, self.ui.lcdNumber_2, self.ui.lcdNumber_3, self.ui.lcdNumber_4]
 
-     # Connect mouse events for brightness and contrast adjustment
+    # Connect mouse events for brightness and contrast adjustment
     self.ui.label_1.mousePressEvent = self.on_mouse_press
     self.ui.label_1.mouseMoveEvent = self.on_mouse_move
     self.ui.label_1.mouseReleaseEvent = self.on_mouse_release
@@ -46,7 +46,7 @@ class FourierTransformMixer(QMainWindow):
         slider.valueChanged.connect(weight_lcd.display)
 
     self.images = [Image() for _ in range(4)]
-    self.mixer  = Mixer(self.images,self.ui,self.combos_output,output_labels=self.output_labels)
+    self.mixer  = Mixer(self.images, self.ui, self.combos_output, output_labels=self.output_labels)
 
     for speed_slider in self.speed_sliders:
         speed_slider.valueChanged.connect(self.set_weights)

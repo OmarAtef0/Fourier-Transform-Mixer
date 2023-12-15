@@ -8,8 +8,8 @@ from PyQt5 import QtCore
 class Image():
     #Global Variables
     image_instances = []
-    initial_width = 320
-    initial_height = 200
+    max_width = 600
+    max_height = 500
     ID =0
     def __init__(self):
         self.id = Image.ID
@@ -23,9 +23,9 @@ class Image():
         self.shape = None
 
         #Image Components
-        self.fft ,self.fft_shift = None ,None
-        self.phase , self.phase_shifted = None,None
-        self.mag ,self.mag_shifted = None, None
+        self.fft, self.fft_shift = None, None
+        self.phase, self.phase_shifted = None, None
+        self.mag, self.mag_shifted = None, None
         self.real, self.real_shifted= None, None
         self.imag, self.imag_shifted = None, None
         Image.image_instances.append(self)
@@ -33,7 +33,7 @@ class Image():
     def get_id(self):
         return self.id
 
-    def browse_file(self, label,spectrum_label):
+    def browse_file(self, label, spectrum_label):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
         path, _ = QFileDialog.getOpenFileName(None, "Browse Image File", "", "Images (*.png *.jpg *.bmp *.gif *.tif *.tiff);;All Files (*)", options=options)
@@ -45,7 +45,7 @@ class Image():
         self.path = path
         self.load_image(path, label)
 
-    def load_image(self, path, label ,show=True):
+    def load_image(self, path, label,show=True):
         try:
             # Read and convert the image
             self.original_img = cv2.imread(path, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
@@ -53,7 +53,6 @@ class Image():
             self.reshape(self.original_img.shape[0], self.original_img.shape[1])
             self.reshape_all()
             
-
             # Convert to uint8 and scale pixel values
             self.original_img = self.original_img.astype(np.uint8)
             cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
@@ -65,6 +64,7 @@ class Image():
             # Set the original and current images as QPixmap
             self.img = QPixmap.fromImage(q_image)
             self.compute_fourier_transform(self.spectrum_label)
+        
             if show: #used for hide/show
                 # Display the image using a PyQt widget (e.g., QLabel)
                 self.display_image(label)
@@ -83,13 +83,21 @@ class Image():
         Returns:
         - None
         """
+        self.original_img = self.original_img.astype(np.uint8)
+        cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
+        bytes_per_line = 1 * self.shape[1]
+        q_image = QImage(self.original_img.data, self.original_img.shape[1], self.original_img.shape[0], bytes_per_line, QImage.Format_Grayscale8)
+
+            # Set the original and current images as QPixmap
+        self.img = QPixmap.fromImage(q_image)
+        
         # Check if the image is not None
         if self.img is not None:
             # Set the pixmap only if the image is not None
             label.setPixmap(self.img)
             label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
-
+    #WE CAN DELETE THIS FUNCTION
     def reshape(self, img_height, img_width):
         """
         Resize the image to the specified dimensions.
@@ -101,10 +109,10 @@ class Image():
         Returns:
         - None
         """
-        new_height = min(Image.initial_height, img_height)
-        new_width = min(Image.initial_width, img_width)
-        Image.initial_height = new_height
-        Image.initial_width = new_width
+        new_height = min(Image.max_height, img_height)
+        new_width = min(Image.max_width, img_width)
+        Image.max_height = new_height
+        Image.max_width = new_width
 
         # Resize the image
         self.original_img = cv2.resize(self.original_img, (new_width, new_height))
@@ -113,7 +121,7 @@ class Image():
 
 
     @classmethod
-    def reshape_all(cls):
+    def reshape_all(self):
         """
         Resize all images in a list of Image instances to the smallest dimensions among them.
 
@@ -124,19 +132,24 @@ class Image():
         - None
         """
         # Find the smallest image dimensions among all instances
-        min_height = min(inst.original_img.shape[0] for inst in cls.image_instances if inst.original_img is not None)
-        min_width = min(inst.original_img.shape[1] for inst in cls.image_instances if inst.original_img is not None)
+        min_height = min(img.original_img.shape[0] for img in Image.image_instances if img.original_img is not None)
+        min_width = min(img.original_img.shape[1] for img in Image.image_instances if img.original_img is not None)
 
         # Resize all images to the smallest dimensions
-        for inst in cls.image_instances:
+        for img in Image.image_instances:
+        
             try:
-                if inst.original_img is not None:
-                    inst.reshape(min_height, min_width)
-                    inst.display_image(inst.label)
+                if img.original_img is not None:
+                    # img.reshape(Image.min_height, Image.min_width)
+                    img.original_img = cv2.resize(img.original_img, (Image.max_width, Image.max_height))
+                    img.original_img = cv2.resize(img.original_img, (min_width, min_height))
+                    img.shape = img.original_img.shape
+                    img.display_image(img.label)
+                    img.compute_fourier_transform(img.spectrum_label)
             except Exception as e:
-                print(f"Error in instance {inst.get_id()}: {str(e)}")
+                print(f"Error in instance {img.get_id()}: {str(e)}")
 
-    def compute_fourier_transform(self,spectrum_label, show=True):
+    def compute_fourier_transform(self, spectrum_label, show=True):
         """
         Compute the 2D Fourier Transform and related components of the image.
 
@@ -200,7 +213,7 @@ class Image():
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
-            print(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]} ,its shape is: {spectrum.shape}")
+            print(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]} , its shape is: {spectrum.shape}")
 
             # Check for NaN values
             if np.isnan(spectrum).any():
@@ -209,7 +222,7 @@ class Image():
 
             # Normalize the spectrum values to be between 0 and 255
 
-            spectrum_normalized = cv2.normalize(spectrum , None,0 , 255,cv2.NORM_MINMAX) 
+            spectrum_normalized = cv2.normalize(spectrum, None, 0, 255, cv2.NORM_MINMAX) 
             # spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) ---> Same approach,Same result
 
             # Convert to bytes using NumPy functions
