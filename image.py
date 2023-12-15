@@ -58,13 +58,9 @@ class Image():
             cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
 
             # Convert to QImage
-            bytes_per_line = 1 * self.shape[1]
-            q_image = QImage(self.original_img.data, self.shape[1], self.shape[0], bytes_per_line, QImage.Format_Grayscale8)
-
-            # Set the original and current images as QPixmap
-            self.img = QPixmap.fromImage(q_image)
+            self.img = self.qimage_from_numpy(self.original_img)
+            
             self.compute_fourier_transform(self.spectrum_label)
-        
             if show: #used for hide/show
                 # Display the image using a PyQt widget (e.g., QLabel)
                 self.display_image(label)
@@ -85,11 +81,9 @@ class Image():
         """
         self.original_img = self.original_img.astype(np.uint8)
         cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
-        bytes_per_line = 1 * self.shape[1]
-        q_image = QImage(self.original_img.data, self.original_img.shape[1], self.original_img.shape[0], bytes_per_line, QImage.Format_Grayscale8)
-
-            # Set the original and current images as QPixmap
-        self.img = QPixmap.fromImage(q_image)
+        
+        # Set the original and current images as QPixmap
+        self.img = self.qimage_from_numpy(self.original_img)
         
         # Check if the image is not None
         if self.img is not None:
@@ -134,14 +128,13 @@ class Image():
         # Find the smallest image dimensions among all instances
         min_height = min(img.original_img.shape[0] for img in Image.image_instances if img.original_img is not None)
         min_width = min(img.original_img.shape[1] for img in Image.image_instances if img.original_img is not None)
-
+        self.max_height, self.max_width = min_height, min_width
         # Resize all images to the smallest dimensions
         for img in Image.image_instances:
         
             try:
                 if img.original_img is not None:
                     # img.reshape(Image.min_height, Image.min_width)
-                    img.original_img = cv2.resize(img.original_img, (Image.max_width, Image.max_height))
                     img.original_img = cv2.resize(img.original_img, (min_width, min_height))
                     img.shape = img.original_img.shape
                     img.display_image(img.label)
