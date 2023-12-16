@@ -72,6 +72,7 @@ class Mixer():
     def display_mixed(self,mixed_image,output_label,output_label_combo):
         
         mixed_image = cv2.normalize(mixed_image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
+        mixed_image= cv2.resize(mixed_image,(350,300))
         print("Mixed Image After Normalaizing:",mixed_image)
         height, width = mixed_image.shape
         bytes_per_line = width

@@ -8,8 +8,8 @@ from PyQt5 import QtCore
 class Image():
     #Global Variables
     image_instances = []
-    max_width = 600
-    max_height = 500
+    max_width = 350
+    max_height = 250
     ID =0
     def __init__(self):
         self.id = Image.ID
@@ -235,23 +235,25 @@ class Image():
           
         # Change the brightness of the image
         print(f'Brightness Factor: {brightness_factor}')
-        self.original_img = np.clip(self.original_img + brightness_factor, 0, 255).astype(np.uint8)
-        # Update Fourier Transform components and display
-        self.compute_fourier_transform(self.spectrum_label)
-        self.img = self.qimage_from_numpy(self.original_img)
-        self.display_image(self.label)
+        if self.original_img is not None:
+            self.original_img = np.clip(self.original_img + brightness_factor, 0, 255).astype(np.uint8)
+            # Update Fourier Transform components and display
+            self.compute_fourier_transform(self.spectrum_label)
+            self.img = self.qimage_from_numpy(self.original_img)
+            self.display_image(self.label)
         # Update the QPixmap
 
     def change_contrast(self, contrast_factor):
 
         
         print(f'Contrast Factor: {contrast_factor}')
-        # Change the contrast of the image
-        self.original_img = np.clip(self.original_img * contrast_factor, 0, 255).astype(np.uint8)
-        # Update Fourier Transform components and display
-        self.compute_fourier_transform(self.spectrum_label)
-        self.img = self.qimage_from_numpy(self.original_img)
-        self.display_image(self.label)
+        if self.original_img is not None:
+            # Change the contrast of the image
+            self.original_img = np.clip(self.original_img * contrast_factor, 0, 255).astype(np.uint8)
+            # Update Fourier Transform components and display
+            self.compute_fourier_transform(self.spectrum_label)
+            self.img = self.qimage_from_numpy(self.original_img)
+            self.display_image(self.label)
         # Update the QPixmap
 
     def qimage_from_numpy(self, numpy_array):
