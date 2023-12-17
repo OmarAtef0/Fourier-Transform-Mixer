@@ -8,10 +8,9 @@ from image import Image
 from mixer import Mixer
 
 '''WHATS NEEDED:
-1-Fix the reshape image function
-2-Add contrast to all images "It works on first image only"
-3-Add the rectangle feature to take a part of image
-4- Refactoring to add functions to new class instead of Main class 
+1-Add limits to contrast and brightness
+2-Add the rectangle feature to take a part of image (inner and outer)
+3- Refactoring to add functions to new class instead of Main class 
 '''
 class FourierTransformMixer(QMainWindow):
   
