@@ -1,57 +1,82 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLabel, QFileDialog
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap, QImage
-import pyqtgraph as pg
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
+from PyQt5.QtGui import QPixmap, QPainter, QPen
+from PyQt5.QtCore import Qt, QPointF, QRectF
 
-class ImageDisplay(QWidget):
-    def __init__(self):
-        super().__init__()
+class ROIWidget(QLabel):
+    def __init__(self, parent=None):
+        super(ROIWidget, self).__init__(parent)
+        self.setPixmap(QPixmap("assets/img_1.jpg"))  # Replace with the path to your image
+        self.roi_rect = QRectF(50, 50, 100, 100)
+        self.dragging = False
+        self.resize_handle_pressed = False
+        self.last_pos = QPointF()
 
-        # Create QLabel for image display
-        self.label_viewport = QLabel()
-        self.label_viewport.setAlignment(Qt.AlignCenter)
+    def mousePressEvent(self, event):
+        if event.buttons() == Qt.LeftButton:
+            if self.resize_handle_rect().contains(event.pos()):
+                self.resize_handle_pressed = True
+            elif self.roi_rect.contains(event.pos()):
+                self.dragging = True
+            self.last_pos = event.pos()
 
-        # Create PyQtGraph ImageView for image display
-        self.graph_viewport = pg.ImageView()
+    def mouseMoveEvent(self, event):
+        if self.dragging:
+            delta = event.pos() - self.last_pos
+            self.roi_rect.translate(delta)
+            self.update()
+        elif self.resize_handle_pressed:
+            delta = event.pos() - self.last_pos
+            # self.roi_rect.adjust(0, 0, delta.x(), delta.y())
+            self.roi_rect.setBottomRight(event.pos())
+            self.update()
+        self.last_pos = event.pos()
 
-        # Create layout
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.label_viewport)
-        layout.addWidget(self.graph_viewport)
+    def mouseReleaseEvent(self, event):
+        self.dragging = False
+        self.resize_handle_pressed = False
 
-        # Connect double-click events to open file dialog
-        self.label_viewport.mouseDoubleClickEvent = self.open_image_dialog
-        self.graph_viewport.scene.sigMouseClicked.connect(self.open_image_dialog)
+    def paintEvent(self, event):
+        super(ROIWidget, self).paintEvent(event)
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
 
-    def open_image_dialog(self, event):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        file_name, _ = QFileDialog.getOpenFileName(self, "Open Image File", "", "Images (*.png *.jpg *.bmp);;All Files (*)", options=options)
+        # Draw the ROI rectangle
+        painter.setPen(QPen(Qt.red, 2, Qt.SolidLine))
+        painter.drawRect(self.roi_rect)
 
-        if file_name:
-            # Load image to QLabel
-            pixmap = QPixmap(file_name)
-            self.label_viewport.setPixmap(pixmap.scaled(self.label_viewport.size(), Qt.KeepAspectRatio))
+        # Draw the resize handle
+        painter.setBrush(Qt.red)
+        painter.drawRect(self.resize_handle_rect())
 
-            # Load image to PyQtGraph ImageView
-            img = pg.ImageItem()
-            img.setImage(QImage(file_name))
-            self.graph_viewport.addItem(img)
+    def resize_handle_rect(self):
+        handle_size = 10
+        return QRectF(self.roi_rect.bottomRight().x() - handle_size,
+                      self.roi_rect.bottomRight().y() - handle_size,
+                      handle_size,
+                      handle_size)
+
+    def resize_roi(self, width=200, height=200):
+        self.roi_rect.setWidth(width)
+        self.roi_rect.setHeight(height)
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
+        super(MainWindow, self).__init__()
 
-        self.central_widget = ImageDisplay()
-        self.setCentralWidget(self.central_widget)
+        self.roi_widget = ROIWidget()
+        central_widget = QWidget()
+        layout = QVBoxLayout(central_widget)
+        layout.addWidget(self.roi_widget)
+        self.setCentralWidget(central_widget)
 
-def main():
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    window.setGeometry(100, 100, 800, 600)
-    window.show()
-    sys.exit(app.exec_())
+
+    # def timerEvent(self, event):
+    #     # Example: Resize the ROI to 150x150
+    #     self.roi_widget.resize_roi(150, 150)
+
 
 if __name__ == "__main__":
-    main()
+    app = QApplication([])
+    window = MainWindow()
+    window.show()
+    app.exec_()

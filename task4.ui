@@ -113,11 +113,19 @@
                  <verstretch>0</verstretch>
                 </sizepolicy>
                </property>
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                </font>
+               </property>
                <property name="styleSheet">
                 <string notr="true"/>
                </property>
                <property name="text">
                 <string>Double click to add Image</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -181,7 +189,7 @@
                    <string notr="true"/>
                   </property>
                   <property name="text">
-                   <string>TextLabel</string>
+                   <string>Image 1 Spectrum </string>
                   </property>
                  </widget>
                 </item>
@@ -229,6 +237,9 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
                 <string>Double click to add Image</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -292,7 +303,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <string notr="true"/>
                   </property>
                   <property name="text">
-                   <string>TextLabel</string>
+                   <string>Image 2 Spectrum</string>
                   </property>
                  </widget>
                 </item>
@@ -340,6 +351,9 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
                 <string>Double click to add Image</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -403,7 +417,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <string notr="true"/>
                   </property>
                   <property name="text">
-                   <string>TextLabel</string>
+                   <string>Image 3 Spectrum</string>
                   </property>
                  </widget>
                 </item>
@@ -451,6 +465,9 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                </property>
                <property name="text">
                 <string>Double click to add Image</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
                </property>
               </widget>
              </item>
@@ -514,7 +531,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <string notr="true"/>
                   </property>
                   <property name="text">
-                   <string>TextLabel</string>
+                   <string>Image 4 Spectrum</string>
                   </property>
                  </widget>
                 </item>
@@ -660,6 +677,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </item>
                 <item>
                  <widget class="QComboBox" name="comboBox_6">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <item>
                    <property name="text">
                     <string>Magnitude</string>
@@ -732,6 +755,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                     <height>25</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -776,6 +805,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </item>
                 <item>
                  <widget class="QComboBox" name="comboBox_7">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <item>
                    <property name="text">
                     <string>Magnitude</string>
@@ -845,6 +880,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                     <height>25</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -889,6 +930,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </item>
                 <item>
                  <widget class="QComboBox" name="comboBox_8">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <item>
                    <property name="text">
                     <string>Magnitude</string>
@@ -958,6 +1005,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                     <height>25</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
@@ -1002,6 +1055,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </item>
                 <item>
                  <widget class="QComboBox" name="comboBox_9">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>25</height>
+                   </size>
+                  </property>
                   <item>
                    <property name="text">
                     <string>Magnitude</string>
@@ -1071,36 +1130,32 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                     <height>25</height>
                    </size>
                   </property>
+                  <property name="font">
+                   <font>
+                    <weight>75</weight>
+                    <bold>true</bold>
+                   </font>
+                  </property>
                  </widget>
                 </item>
                </layout>
               </widget>
              </item>
-             <item>
-              <layout class="QVBoxLayout" name="verticalLayout_9">
-               <item>
-                <widget class="QPushButton" name="mixButton">
-                 <property name="styleSheet">
-                  <string notr="true">
-
-QPushButton {
-    background-color: rgb(0, 85, 255);
-color:rgb(255, 255, 255);
-}
-
-QPushButton:hover {
-    background-color: rgb(0, 50, 150);
-}
-</string>
-                 </property>
-                 <property name="text">
-                  <string>Mix</string>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </item>
             </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
            </widget>
           </item>
           <item>
