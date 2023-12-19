@@ -41,7 +41,7 @@ class Mixer():
 
 
             # Combine magnitude and phase components
-            mixed_image = np.abs(np.real(np.fft.ifft2(magnitude * np.exp(1j * phase)))) 
+            mixed_image = np.abs(np.fft.ifft2(magnitude * np.exp(1j * phase))) 
             print(f'Original image: {self.images[0].original_img[0][:10]}')
             print("Mixed Image before clipping:",mixed_image[0][:10])
             mixed_image=np.clip(mixed_image, 0,255) 
