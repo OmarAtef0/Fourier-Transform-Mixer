@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon, QMouseEvent
 from task4 import Ui_MainWindow
 from image import Image
 from mixer import Mixer
+import qdarkstyle
 
 '''WHATS NEEDED:
 1-Add limits to contrast and brightness
@@ -177,6 +178,7 @@ if __name__ == "__main__":
   app = QApplication(sys.argv)
   window = FourierTransformMixer()
   window.setWindowTitle("Fourier Transform Mixer")
+  app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt6())
   # app.setWindowIcon(QIcon("assets/logo.jpg"))
   window.resize(1450,950)
   window.show()
