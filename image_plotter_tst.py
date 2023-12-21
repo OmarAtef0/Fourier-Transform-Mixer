@@ -1,45 +1,28 @@
-import numpy as np
-import cv2
-import matplotlib.pyplot as plt
+import sys
+from PyQt5.QtWidgets import QApplication, QGraphicsScene, QGraphicsView, QGraphicsPixmapItem, QGraphicsRectItem
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt, QRectF
 
-def plot_image_properties(image):
-    # Calculate the 2D FFT
-    fft_image = np.fft.fft2(image)
+class ImageViewer(QGraphicsView):
+    def __init__(self, parent=None):
+        super(ImageViewer, self).__init__(parent)
 
-    # Shift the zero frequency component to the center
-    fft_image_shifted = np.log(np.fft.fftshift(fft_image)+1)
+        # Create a scene
+        self.scene = QGraphicsScene(self)
+        self.setScene(self.scene)
 
-    # Magnitude spectrum
-    magnitude_spectrum = np.abs(fft_image_shifted)
-    plt.subplot(2, 2, 1)
-    plt.imshow(np.multiply(np.log(1 + magnitude_spectrum),20), cmap='gray')
-    plt.title('Magnitude Spectrum')
-    
-    # Phase spectrum
-    phase_spectrum = np.angle(fft_image_shifted)
-    plt.subplot(2, 2, 2)
-    plt.imshow(phase_spectrum, cmap='gray')
-    plt.title('Phase Spectrum')
+        # Load an image
+        pixmap = QPixmap("assets/img_2.jpg")
+        item = QGraphicsPixmapItem(pixmap)
+        self.scene.addItem(item)
 
-    # Real part
-    real_part = np.real(fft_image_shifted)
+        # Add a rectangular ROI
+        roi_rect = QGraphicsRectItem(QRectF(100, 100, 200, 200))  # Define the ROI rect
+        roi_rect.setPen(Qt.red)  # Set the pen color for the ROI
+        self.scene.addItem(roi_rect)
 
-    plt.subplot(2, 2, 3)
-    plt.imshow(real_part, cmap='gray')
-    plt.title('Real Part')
-
-    # Imaginary part
-    imag_part = np.imag(fft_image_shifted)
-    plt.subplot(2, 2, 4)
-    plt.imshow(imag_part, cmap='gray')
-    plt.title('Imaginary Part')
-
-    print("REAL PART:",real_part, "And its shape is:",real_part.shape)
-    print("mag shape:", magnitude_spectrum.shape)
-    print("imaginary shape:", imag_part.shape)
-    print("Phase shape:", phase_spectrum.shape)
-    plt.show()
-
-# Example usage with a random image (replace this with your image)
-your_image = cv2.imread("assets/img_2.jpg", cv2.IMREAD_GRAYSCALE)
-plot_image_properties(your_image)
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    viewer = ImageViewer()
+    viewer.show()
+    sys.exit(app.exec_())

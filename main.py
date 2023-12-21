@@ -1,5 +1,6 @@
 import sys
 import cv2
+import numpy as np
 from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon, QMouseEvent
@@ -50,9 +51,6 @@ class FourierTransformMixer(QMainWindow):
     self.brightness_accumulated = {i: 0.0 for i in range(len(self.images))}
     self.contrast_accumulated = {i: 0.0 for i in range(len(self.images))}
 
-    # self.brightness_accumulated= [0.0] * len(self.labels)
-    # self.contrast_accumulated = [0.0] * len(self.labels)
-    # print("Initialized Bright",self.brightness_accumulated)
 
     for weight_slider in self.weight_sliders:
         weight_slider.valueChanged.connect(self.set_weights)
@@ -121,6 +119,24 @@ class FourierTransformMixer(QMainWindow):
             self.mouse_pressed = True
             self.initial_pos = event.pos()
             self.current_image_index = index
+        elif (
+            event.button() == Qt.MouseButton.RightButton
+            and label.geometry().contains(event.pos())
+        ):
+            self.reset_brightness_contrast(index)
+
+  def reset_brightness_contrast(self, index):
+    # Reset brightness and contrast for the specified image to its original state
+    self.brightness_accumulated[index] = 0.0
+    self.contrast_accumulated[index] = 0.0
+
+    # Reload the original image
+    self.images[index].load_image(self.images[index].path, self.labels[index])
+
+    # Update Fourier Transform components and display
+    self.images[index].display_image(self.labels[index])
+
+
 
 
   def on_mouse_move(self, event: QMouseEvent):
@@ -138,8 +154,8 @@ class FourierTransformMixer(QMainWindow):
                 self.images[i].change_contrast(1.0 + contrast_factor)
 
                 # Reset accumulated factors for the current image
-                self.brightness_accumulated[i] = 0.0
-                self.contrast_accumulated[i] = 0.0
+                # self.brightness_accumulated[i] = 0.0
+                # self.contrast_accumulated[i] = 0.0
 
 
   def track_mouse_position(self, event: QMouseEvent):
@@ -159,12 +175,12 @@ class FourierTransformMixer(QMainWindow):
             for i in range(len(self.images)):
                 if abs(dx) > margin:
                     # Adjust brightness based on horizontal movement
-                    brightness_factor = dx / 50.0
+                    brightness_factor = dx / 100.0
                     self.brightness_accumulated[i] += brightness_factor
 
                 if abs(dy) > margin:
                     # Adjust contrast based on vertical movement
-                    contrast_factor = dy / 50.0
+                    contrast_factor = dy / 100.0
                     self.contrast_accumulated[i] += contrast_factor
 
             self.x = crrX

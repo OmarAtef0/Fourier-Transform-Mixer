@@ -45,7 +45,7 @@ class Image():
         self.path = path
         self.load_image(path, label)
 
-    def load_image(self, path, label,show=True):
+    def load_image(self, path, label):
         try:
             # Read and convert the image
             self.original_img = cv2.imread(path, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
@@ -61,9 +61,8 @@ class Image():
             self.img = self.qimage_from_numpy(self.original_img)
             
             self.analyze_frequency_content(self.spectrum_label)
-            if show: #used for hide/show
-                # Display the image using a PyQt widget (e.g., QLabel)
-                self.display_image(label)
+            self.display_image(label)
+
         except cv2.error as e:
             print(f"Error: Couldn't load the image at {path}. OpenCV error: {str(e)}")
         except Exception as e:
@@ -220,21 +219,18 @@ class Image():
         print(f'Brightness Factor: {brightness_factor}')
         if self.original_img is not None:
             self.original_img = np.clip(self.original_img + brightness_factor, 0, 255).astype(np.uint8)
-            # Update Fourier Transform components and display
-            self.analyze_frequency_content(self.spectrum_label)
+            # Display Image only
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
         # Update the QPixmap
 
     def change_contrast(self, contrast_factor):
-
         
         print(f'Contrast Factor: {contrast_factor}')
         if self.original_img is not None:
             # Change the contrast of the image
             self.original_img = np.clip(self.original_img * contrast_factor, 0, 255).astype(np.uint8)
-            # Update Fourier Transform components and display
-            self.analyze_frequency_content(self.spectrum_label)
+            # Display Image only
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
         # Update the QPixmap
