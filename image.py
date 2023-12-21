@@ -218,7 +218,7 @@ class Image():
         # Change the brightness of the image
         print(f'Brightness Factor: {brightness_factor}')
         if self.original_img is not None:
-            self.original_img = np.clip(self.original_img + brightness_factor, 0, 255).astype(np.uint8)
+            self.original_img = np.clip(self.original_img + brightness_factor, 30, 240).astype(np.uint8)
             # Display Image only
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
@@ -229,7 +229,7 @@ class Image():
         print(f'Contrast Factor: {contrast_factor}')
         if self.original_img is not None:
             # Change the contrast of the image
-            self.original_img = np.clip(self.original_img * contrast_factor, 0, 255).astype(np.uint8)
+            self.original_img = np.clip(self.original_img * contrast_factor, 30, 240).astype(np.uint8)
             # Display Image only
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
