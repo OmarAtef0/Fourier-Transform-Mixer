@@ -35,7 +35,7 @@ class Image():
 
     def browse_file(self, label, spectrum_label):
         options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
+        options |= QFileDialog.ReadOnly
         path, _ = QFileDialog.getOpenFileName(None, "Browse Image File", "", "Images (*.png *.jpg *.bmp *.gif *.tif *.tiff);;All Files (*)", options=options)
         if path:
             self.spectrum_label = spectrum_label
