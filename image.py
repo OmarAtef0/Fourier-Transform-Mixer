@@ -60,7 +60,7 @@ class Image():
             # Convert to QImage
             self.img = self.qimage_from_numpy(self.original_img)
             
-            self.compute_fourier_transform(self.spectrum_label)
+            self.analyze_frequency_content(self.spectrum_label)
             if show: #used for hide/show
                 # Display the image using a PyQt widget (e.g., QLabel)
                 self.display_image(label)
@@ -138,21 +138,12 @@ class Image():
                     img.original_img = cv2.resize(img.original_img, (min_width, min_height))
                     img.shape = img.original_img.shape
                     img.display_image(img.label)
-                    img.compute_fourier_transform(img.spectrum_label)
+                    img.analyze_frequency_content(img.spectrum_label)
             except Exception as e:
                 print(f"Error in instance {img.get_id()}: {str(e)}")
 
-    def compute_fourier_transform(self, spectrum_label, show=True):
-        """
-        Compute the 2D Fourier Transform and related components of the image.
-
-        Parameters:
-        - show (bool, optional): If True, display visualizations of the Fourier Transform components.
-                                Default is True.
-
-        Returns:
-        - None
-        """
+    def analyze_frequency_content(self, spectrum_label, show=True):
+       
         # Compute the 2D Fourier Transform
         self.fft = np.fft.fft2(self.original_img)
 
@@ -181,7 +172,7 @@ class Image():
                             , self.real_shifted ,
                               self.imag_shifted]
 
-        #contruct a dictionary to map each component to its type
+        #construct a dictionary to map each component to its type
         self.fft_dict = {
                         "FT Magnitude": self.fft_components[0],
                         "FT Phase": self.fft_components[1],
@@ -194,15 +185,7 @@ class Image():
             self.plot_spectrum("FT Magnitude", spectrum_label) 
 
     def plot_spectrum(self, spectrum_type, spectrum_label):
-        """
-        Plot the selected spectrum type.
-
-        Parameters:
-        - spectrum_type (str): The type of spectrum to plot.
-
-        Returns:
-        - None
-        """
+      
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
@@ -238,7 +221,7 @@ class Image():
         if self.original_img is not None:
             self.original_img = np.clip(self.original_img + brightness_factor, 0, 255).astype(np.uint8)
             # Update Fourier Transform components and display
-            self.compute_fourier_transform(self.spectrum_label)
+            self.analyze_frequency_content(self.spectrum_label)
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
         # Update the QPixmap
@@ -251,7 +234,7 @@ class Image():
             # Change the contrast of the image
             self.original_img = np.clip(self.original_img * contrast_factor, 0, 255).astype(np.uint8)
             # Update Fourier Transform components and display
-            self.compute_fourier_transform(self.spectrum_label)
+            self.analyze_frequency_content(self.spectrum_label)
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
         # Update the QPixmap

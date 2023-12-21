@@ -696,7 +696,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSlider" name="speed_slider">
+                 <widget class="QSlider" name="weight_slider">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -824,7 +824,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSlider" name="speed_slider_2">
+                 <widget class="QSlider" name="weight_slider_2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -949,7 +949,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSlider" name="speed_slider_4">
+                 <widget class="QSlider" name="weight_slider_3">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -992,7 +992,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLCDNumber" name="lcdNumber_4">
+                 <widget class="QLCDNumber" name="lcdNumber_3">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -1074,7 +1074,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QSlider" name="speed_slider_3">
+                 <widget class="QSlider" name="weight_slider_4">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -1117,7 +1117,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLCDNumber" name="lcdNumber_3">
+                 <widget class="QLCDNumber" name="lcdNumber_4">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>

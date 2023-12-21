@@ -20,7 +20,7 @@ class FourierTransformMixer(QMainWindow):
     self.ui = Ui_MainWindow()
     self.ui.setupUi(self)  
     
-    self.speed_sliders= [self.ui.speed_slider, self.ui.speed_slider_2, self.ui.speed_slider_3, self.ui.speed_slider_4]
+    self.weight_sliders= [self.ui.weight_slider, self.ui.weight_slider_2, self.ui.weight_slider_3, self.ui.weight_slider_4]
     self.combos_input = [self.ui.comboBox, self.ui.comboBox_2, self.ui.comboBox_3, self.ui.comboBox_4]
     self.combos_output = [self.ui.comboBox_6, self.ui.comboBox_7, self.ui.comboBox_8, self.ui.comboBox_9]
     self.labels = [self.ui.label_1, self.ui.label_3, self.ui.label_5, self.ui.label_7]
@@ -39,9 +39,9 @@ class FourierTransformMixer(QMainWindow):
     self.mouse_pressed = False
 
     for i, weight_lcd in enumerate(self.lcd_numbers):
-        weight_lcd.display(self.speed_sliders[i].value())
+        weight_lcd.display(self.weight_sliders[i].value())
 
-    for slider, weight_lcd in zip(self.speed_sliders, self.lcd_numbers):
+    for slider, weight_lcd in zip(self.weight_sliders, self.lcd_numbers):
         slider.valueChanged.connect(weight_lcd.display)
 
     self.images = [Image() for _ in range(4)]
@@ -53,9 +53,9 @@ class FourierTransformMixer(QMainWindow):
     # self.contrast_accumulated = [0.0] * len(self.labels)
     # print("Initialized Bright",self.brightness_accumulated)
 
-    for speed_slider in self.speed_sliders:
-        speed_slider.valueChanged.connect(self.set_weights)
-        speed_slider.valueChanged.connect(self.mixer.mix_images)
+    for weight_slider in self.weight_sliders:
+        weight_slider.valueChanged.connect(self.set_weights)
+        weight_slider.valueChanged.connect(self.mixer.mix_images)
         
 
     for label, spectrum_label, image in zip(self.labels, self.spectrum_labels, self.images):
@@ -102,7 +102,7 @@ class FourierTransformMixer(QMainWindow):
               combo.addItems(options)
    
   def set_weights(self):
-        weights = [slider.value() for slider in self.speed_sliders]
+        weights = [slider.value() for slider in self.weight_sliders]
         self.mixer.set_weights(weights)
 
             
