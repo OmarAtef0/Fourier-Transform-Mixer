@@ -4,23 +4,30 @@ import matplotlib.pyplot as plt
 from PyQt5.QtGui import QImageReader, QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QLabel
 from PyQt5 import QtCore
+import pyqtgraph as pg
 
 class Image():
     #Global Variables
     image_instances = []
     max_width = 350
     max_height = 250
-    ID =0
+    ID = 0
+    
     def __init__(self):
         self.id = Image.ID
         Image.ID +=1
         self.path = None
         self.original_img = None  # Store the original image data (NumPy array)
         self.img = None  # for display only
+        self.inner_img, self.outer_img = None, None
         # self.displayed_after_reshape = False  # Flag to track if displayed after reshape
         self.label = None  # QLabel containing Image
-        self.spectrum_label = None # QLabel Containing the Spectrums
+        self.spectrum_widget = None # QLabel Containing the Spectrums
+        self.image_view = None
+        self.image_item = None
         self.shape = None
+        self.ft_roi = None
+        self.fft_components = []
 
         #Image Components
         self.fft, self.fft_shift = None, None
@@ -29,17 +36,19 @@ class Image():
         self.real, self.real_shifted= None, None
         self.imag, self.imag_shifted = None, None
         Image.image_instances.append(self)
+        # self.init_spectrum()
 
     def get_id(self):
         return self.id
 
-    def browse_file(self, label, spectrum_label):
+    def browse_file(self, label, spectrum_widget):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         path, _ = QFileDialog.getOpenFileName(None, "Browse Image File", "", "Images (*.png *.jpg *.bmp *.gif *.tif *.tiff);;All Files (*)", options=options)
         if path:
-            self.spectrum_label = spectrum_label
+            self.spectrum_widget = spectrum_widget
             self.set_file_path(path, label)
+            
 
     def set_file_path(self, path, label):
         self.path = path
@@ -60,7 +69,7 @@ class Image():
             # Convert to QImage
             self.img = self.qimage_from_numpy(self.original_img)
             
-            self.analyze_frequency_content(self.spectrum_label)
+            self.analyze_frequency_content(self.spectrum_widget)
             self.display_image(label)
 
         except cv2.error as e:
@@ -90,6 +99,19 @@ class Image():
             label.setPixmap(self.img)
             label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
+    def init_spectrum(self):
+        if self.spectrum_widget is not None:
+            self.image_view = self.spectrum_widget.addViewBox()
+            self.image_view.setAspectLocked(True)
+            self.image_view.setMouseEnabled(x=False, y=False)
+            self.image_view.setMenuEnabled(False)
+
+            # Create the ImageItem and set it to self.image_item
+            self.image_item = pg.ImageItem()
+            self.image_view.addItem(self.image_item)
+        else:
+            print("Error: 'self.spectrum_widget' is None.")
+
     #WE CAN DELETE THIS FUNCTION
     def reshape(self, img_height, img_width):
         """
@@ -111,7 +133,6 @@ class Image():
         self.original_img = cv2.resize(self.original_img, (new_width, new_height))
         # Update the shape attribute
         self.shape = self.original_img.shape
-
 
     @classmethod
     def reshape_all(self):
@@ -137,11 +158,11 @@ class Image():
                     img.original_img = cv2.resize(img.original_img, (min_width, min_height))
                     img.shape = img.original_img.shape
                     img.display_image(img.label)
-                    img.analyze_frequency_content(img.spectrum_label)
+                    img.analyze_frequency_content(img.spectrum_widget)
             except Exception as e:
                 print(f"Error in instance {img.get_id()}: {str(e)}")
 
-    def analyze_frequency_content(self, spectrum_label, show=True):
+    def analyze_frequency_content(self, spectrum_widget, show=True):
        
         # Compute the 2D Fourier Transform
         self.fft = np.fft.fft2(self.original_img)
@@ -166,24 +187,20 @@ class Image():
         self.imag_shifted = np.imag(self.fft_shift)
 
         # Compute the components of the shifted Fourier Transform
-        self.fft_components= [np.multiply(np.log(self.mag_shifted+1),20) 
-                             , self.phase_shifted
-                            , self.real_shifted ,
-                              self.imag_shifted]
+        self.fft_components = [np.multiply(np.log(self.mag_shifted+1),20), self.phase_shifted, self.real_shifted, self.imag_shifted]
 
         #construct a dictionary to map each component to its type
         self.fft_dict = {
                         "FT Magnitude": self.fft_components[0],
                         "FT Phase": self.fft_components[1],
                         "FT Real": self.fft_components[2],
-                        "FT Imaginary": self.fft_components[3] }
-
+                        "FT Imaginary": self.fft_components[3]}
 
         if show: 
             # Plot the magnitude spectrum by default
-            self.plot_spectrum("FT Magnitude", spectrum_label) 
+            self.plot_spectrum("FT Magnitude") 
 
-    def plot_spectrum(self, spectrum_type, spectrum_label):
+    def plot_spectrum(self, spectrum_type):
       
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
@@ -196,22 +213,10 @@ class Image():
                 spectrum = np.zeros_like(spectrum)  # Set to black image in case of NaN values
 
             # Normalize the spectrum values to be between 0 and 255
-
-            # spectrum_normalized = cv2.normalize(spectrum, None, 0, 255, cv2.NORM_MINMAX) 
             spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) 
-
-            # Convert to bytes using NumPy functions
-            spectrum_bytes = spectrum_normalized.tobytes()
-
-            # Convert to QImage
-            q_image = QImage(spectrum_bytes, spectrum.shape[1], spectrum.shape[0], spectrum.shape[1], QImage.Format_Grayscale8)
-
-            # Set the image in the QLabel
-            spectrum_label.setPixmap(QPixmap.fromImage(q_image))
-            spectrum_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+            self.image_item.setImage(spectrum_normalized)
         else:
             print(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
-
 
     def change_brightness(self, brightness_factor):
           
@@ -240,3 +245,56 @@ class Image():
         bytes_per_line = width
         q_image = QImage(numpy_array.data, width, height, bytes_per_line, QImage.Format_Grayscale8)
         return QPixmap.fromImage(q_image)
+    
+    # def region_update(self, finish = False):
+    #     if finish:
+    #          # Emit signal when ROI changes
+    #         self.sig_emitter.sig_ROI_changed.emit(self.sender())
+                
+    #     # Returns the data from the selected region
+    #     self.inner_img, self.outer_img =  self.return_region_slice()
+        
+    #     new_img = self.ft_roi.getArrayRegion(self.fft_shift, self.image_item )
+        
+    #     # Perform the inverse Fourier transform
+    #     new_img = np.fft.ifft2(np.fft.ifftshift(new_img))
+  
+    #     self.img = new_img
+    #     self.calc_imag_ft(self.img)
+              
+    # Returns the area of data inside and outside the mask created by the ROI
+    # def return_region_slice(self):
+    #     data = self.fft_shift
+                
+    #     # Get index ranges of data from ROI
+    #     data_slice_indices, QTrans = self.ft_roi.getArraySlice(data, self.image_item, returnSlice=True)
+        
+    #     # Setup a mask the size of ROI
+    #     mask = np.full(data.shape, False)
+    #     mask[data_slice_indices] = True
+        
+    #     masked_data_in = data * mask
+    #     masked_data_out = data.copy()
+    #     masked_data_out[mask] = 0
+        
+    #     return (masked_data_in, masked_data_out)
+    
+    def add_scale_handles_ROI(self):
+        positions = np.array([[0,0], [1,0], [1,1], [0,1]])
+        for pos in positions:        
+            self.ft_roi.addScaleHandle(pos = pos, center = 1 - pos)
+              
+    def center_ROI_to_image(self):
+        roi_rect = self.ft_roi.size()
+        half_width = roi_rect[0] / 2
+        half_height = roi_rect[1] / 2
+        center = self.image_item.boundingRect().center()
+        adjusted_center = [center.x() - half_width, center.y()- half_height]
+        self.ft_roi.setPos(adjusted_center)
+            
+    def set_ROI_size_to_image(self):
+        self.ft_roi.setSize(size = (self.image_item.boundingRect().width(), self.image_item.boundingRect().height()))
+               
+    # def reset_ROI(self):
+    #     self.set_ROI_size_to_image()
+    #     self.center_ROI_to_image()

@@ -196,20 +196,7 @@
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string>Image 1 Spectrum </string>
-                  </property>
-                 </widget>
+                 <widget class="GraphicsLayoutWidget" name="spectrum_1" native="true"/>
                 </item>
                </layout>
               </widget>
@@ -322,20 +309,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_4">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string>Image 2 Spectrum</string>
-                  </property>
-                 </widget>
+                 <widget class="GraphicsLayoutWidget" name="spectrum_2" native="true"/>
                 </item>
                </layout>
               </widget>
@@ -448,20 +422,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_6">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string>Image 3 Spectrum</string>
-                  </property>
-                 </widget>
+                 <widget class="GraphicsLayoutWidget" name="spectrum_3" native="true"/>
                 </item>
                </layout>
               </widget>
@@ -574,20 +535,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QLabel" name="label_8">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string>Image 4 Spectrum</string>
-                  </property>
-                 </widget>
+                 <widget class="GraphicsLayoutWidget" name="spectrum_4" native="true"/>
                 </item>
                </layout>
               </widget>
@@ -669,7 +617,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>30</height>
+                 <height>35</height>
                 </size>
                </property>
                <item>
@@ -695,7 +643,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                <property name="minimumSize">
                 <size>
                  <width>0</width>
-                 <height>30</height>
+                 <height>35</height>
                 </size>
                </property>
                <item>
@@ -762,6 +710,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <size>
                     <width>0</width>
                     <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <item>
@@ -838,6 +792,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="font">
                    <font>
+                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -898,6 +853,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <size>
                     <width>0</width>
                     <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <item>
@@ -971,6 +932,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="font">
                    <font>
+                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1031,6 +993,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <size>
                     <width>0</width>
                     <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <item>
@@ -1104,6 +1072,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="font">
                    <font>
+                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1164,6 +1133,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                    <size>
                     <width>0</width>
                     <height>25</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>150</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <item>
@@ -1237,6 +1212,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="font">
                    <font>
+                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1389,6 +1365,14 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
    </property>
   </action>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GraphicsLayoutWidget</class>
+   <extends>QWidget</extends>
+   <header>pyqtgraph</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

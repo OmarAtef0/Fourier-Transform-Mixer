@@ -31,12 +31,12 @@ class Mixer():
                 selected_component = combo.currentText()
 
                 if selected_component == "Magnitude":
-                    print("MAG SHIFTED:",img.fft_components[0][0][:5])
+                    # print("MAG SHIFTED:",img.fft_components[0][0][:5])
                     magnitude += (weight / 100) * img.mag_shifted
                     print(f'Mag after component {i} equal to: {magnitude[0][:5]}')
                 elif selected_component == "Phase":
-                    print("Phase SHIFTED:",img.fft_components[1][0][:5]) 
-                    phase += (weight / 100) * img.fft_components[1]
+                    # print("Phase SHIFTED:",img.fft_components[1][0][:5]) 
+                    phase += (weight / 100) * img.phase_shifted
                     print(f'phase after component {i} using the weight {weight} equal to: {phase[0][:5]}')
 
 
@@ -56,9 +56,9 @@ class Mixer():
                 selected_component = combo.currentText()
 
                 if selected_component == "Real":
-                    real += (weight / 100) * img.fft_components[2]
+                    real += (weight / 100) * img.real_shifted
                 elif selected_component == "Imaginary":
-                    imag += (weight / 100) * img.fft_components[3]
+                    imag += (weight / 100) * img.imag_shifted
             
             
             mixed_image = np.abs(np.fft.ifft2(real + imag * 1j))
