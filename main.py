@@ -9,7 +9,16 @@ from image import Image
 from mixer import Mixer
 import qdarkstyle
 import pyqtgraph as pg
+import logging
 
+logging.basicConfig(filename = 'debugging.log', level = logging.DEBUG, format = '%(asctime)s - %(levelname)s - %(message)s', filemode='w')
+
+'''
+What's Left:
+1-Nkbr 7gm el Plotwidget (setaspect= true btkbro bs bytsrf bghraba)
+2-N3rf leh el state bta3 el checkbox msh bytghyr
+3-Moshklet lw 3mlt import l image fo2 el image elspectrum byrsm etnen gmb b3d (spectrum_widget.clear(btfadeeh khales)) <<MMKN MNE3MELHASH>>
+'''
 class FourierTransformMixer(QMainWindow):
   
   def __init__(self):
@@ -22,15 +31,13 @@ class FourierTransformMixer(QMainWindow):
     self.combos_input = [self.ui.comboBox, self.ui.comboBox_2, self.ui.comboBox_3, self.ui.comboBox_4]
     self.combos_output = [self.ui.comboBox_6, self.ui.comboBox_7, self.ui.comboBox_8, self.ui.comboBox_9]
     self.labels = [self.ui.label_1, self.ui.label_3, self.ui.label_5, self.ui.label_7]
-    # self.spectrum_labels = [self.ui.label_2, self.ui.label_4, self.ui.label_6, self.ui.label_8]
-    self.spectrums = [self.ui.spectrum_1, self.ui.spectrum_2, self.ui.spectrum_3, self.ui.specturm_4]
+    self.spectrums = [self.ui.spectrum_1, self.ui.spectrum_2, self.ui.spectrum_3, self.ui.spectrum_4]
     self.output_labels = [self.ui.outputlabel, self.ui.outputlabel_2]
+    self.check_boxes = [self.ui.checkBox,self.ui.checkBox_2,self.ui.checkBox_3,self.ui.checkBox_4]
     # Connect LCDNumber widgets to weights
     self.lcd_numbers = [self.ui.lcdNumber, self.ui.lcdNumber_2, self.ui.lcdNumber_3, self.ui.lcdNumber_4]
-
     self.images = [Image() for _ in range(4)]
     self.mixer  = Mixer(self.images, self.ui, self.combos_output, output_labels=self.output_labels)
-    
     self.brightness_accumulated = {i: 0.0 for i in range(len(self.images))}
     self.contrast_accumulated = {i: 0.0 for i in range(len(self.images))}
     # Connect mouse events for brightness and contrast adjustment
@@ -58,39 +65,18 @@ class FourierTransformMixer(QMainWindow):
         weight_slider.valueChanged.connect(self.set_weights)
         weight_slider.valueChanged.connect(self.mixer.mix_images)
         
-    for label, spectrum, image in zip(self.labels, self.spectrums, self.images):
-        label.mouseDoubleClickEvent = lambda event, img=image, lbl1=label, lbl2=spectrum: img.browse_file(lbl1, lbl2)
+    for label, spectrum, image,checkbox in zip(self.labels, self.spectrums, self.images,self.check_boxes):
+        label.mouseDoubleClickEvent = lambda event, img=image, lbl1=label, lbl2=spectrum: img.browse_file(lbl1, lbl2,checkbox)
         
-    for combo, image in zip(self.combos_input, self.images):
-      combo.currentIndexChanged.connect(lambda index, img=image, cb=combo: self.handle_combobox_change(index, img, cb))
-
-    for i, img in enumerate(self.images):
-        img.spectrum_widget = self.spectrums[i]
-        img.image_view = img.spectrum_widget.addViewBox()
-        img.image_view.setAspectLocked(True)
-        img.image_view.setMouseEnabled(x=False, y=False)
-        img.image_view.setMenuEnabled(False)
-
-        # Create the ImageItem and set it to self.image_item
-        img.image_item = pg.ImageItem()
-        img.image_view.addItem(img.image_item)
-        # Creating ROI
-        img.ft_roi = pg.ROI(pos = img.image_view.viewRect().center(), size = (50, 50), hoverPen='b', 
-                            resizable= True, invertible= True, 
-                            rotatable= False)
-        img.image_view.addItem(img.ft_roi)
-        img.add_scale_handles_ROI()      
-        
-        # Connecting ROI signal to update region of data selected
-        img.ft_roi.sigRegionChangeFinished.connect(lambda: img.region_update(finish = True))
-
+    for checkbox, image in zip(self.check_boxes, self.images):
+            image.connect_checkbox(checkbox)
 
   def handle_combobox_change(self, index, image, combo):
     try:
         spectrum_type = combo.currentText()
         image.plot_spectrum(spectrum_type)
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        logging.error(f"An error occurred: {str(e)}")
 
   def update_combobox_options(self):
       # Identify the clicked button
@@ -136,6 +122,9 @@ class FourierTransformMixer(QMainWindow):
             event.button() == Qt.MouseButton.RightButton
             and label.geometry().contains(event.pos())
         ):
+            image_instance = self.images[index]
+            if image_instance:
+                image_instance.reset_ROI()
             self.reset_brightness_contrast(index)
 
   def reset_brightness_contrast(self, index):
@@ -162,10 +151,6 @@ class FourierTransformMixer(QMainWindow):
                 # Apply the accumulated factors to the current image
                 self.images[i].change_brightness(brightness_factor)
                 self.images[i].change_contrast(1.0 + contrast_factor)
-
-                # Reset accumulated factors for the current image
-                # self.brightness_accumulated[i] = 0.0
-                # self.contrast_accumulated[i] = 0.0
 
   def track_mouse_position(self, event: QMouseEvent):
         # Track mouse position when clicking and holding

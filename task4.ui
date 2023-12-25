@@ -198,6 +198,13 @@
                 <item>
                  <widget class="GraphicsLayoutWidget" name="spectrum_1" native="true"/>
                 </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox">
+                  <property name="text">
+                   <string>Select Outer Region</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
@@ -310,6 +317,13 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </item>
                 <item>
                  <widget class="GraphicsLayoutWidget" name="spectrum_2" native="true"/>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox_2">
+                  <property name="text">
+                   <string>Select Outer Region</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -424,6 +438,13 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 <item>
                  <widget class="GraphicsLayoutWidget" name="spectrum_3" native="true"/>
                 </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox_3">
+                  <property name="text">
+                   <string>Select Outer Region</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
@@ -536,6 +557,13 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </item>
                 <item>
                  <widget class="GraphicsLayoutWidget" name="spectrum_4" native="true"/>
+                </item>
+                <item>
+                 <widget class="QCheckBox" name="checkBox_4">
+                  <property name="text">
+                   <string>Select Outer Region</string>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>

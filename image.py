@@ -5,6 +5,9 @@ from PyQt5.QtGui import QImageReader, QImage, QPixmap
 from PyQt5.QtWidgets import QFileDialog, QLabel
 from PyQt5 import QtCore
 import pyqtgraph as pg
+import logging
+
+logging.basicConfig(filename = 'debugging.log', level = logging.DEBUG, format = '%(asctime)s - %(levelname)s - %(message)s', filemode='w')
 
 class Image():
     #Global Variables
@@ -23,6 +26,7 @@ class Image():
         # self.displayed_after_reshape = False  # Flag to track if displayed after reshape
         self.label = None  # QLabel containing Image
         self.spectrum_widget = None # QLabel Containing the Spectrums
+        self.checkbox = None #Checkbox for outer region
         self.image_view = None
         self.image_item = None
         self.shape = None
@@ -36,18 +40,21 @@ class Image():
         self.real, self.real_shifted= None, None
         self.imag, self.imag_shifted = None, None
         Image.image_instances.append(self)
-        # self.init_spectrum()
+
 
     def get_id(self):
         return self.id
 
-    def browse_file(self, label, spectrum_widget):
+    def browse_file(self, label, spectrum_widget,checkbox):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
         path, _ = QFileDialog.getOpenFileName(None, "Browse Image File", "", "Images (*.png *.jpg *.bmp *.gif *.tif *.tiff);;All Files (*)", options=options)
         if path:
             self.spectrum_widget = spectrum_widget
+            self.checkbox = checkbox
+            self.init_spectrum()
             self.set_file_path(path, label)
+            
             
 
     def set_file_path(self, path, label):
@@ -69,13 +76,14 @@ class Image():
             # Convert to QImage
             self.img = self.qimage_from_numpy(self.original_img)
             
-            self.analyze_frequency_content(self.spectrum_widget)
+            self.analyze_frequency_content()
             self.display_image(label)
 
         except cv2.error as e:
-            print(f"Error: Couldn't load the image at {path}. OpenCV error: {str(e)}")
+            logging.error(f"Couldn't load the image at {path}. OpenCV error: {str(e)}")
         except Exception as e:
-            print(f"Error: An unexpected error occurred: {str(e)}")
+            logging.error(f"An unexpected error occurred: {str(e)}")
+
 
     def display_image(self, label):
         """
@@ -100,29 +108,27 @@ class Image():
             label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
     def init_spectrum(self):
-        if self.spectrum_widget is not None:
-            self.image_view = self.spectrum_widget.addViewBox()
-            self.image_view.setAspectLocked(True)
-            self.image_view.setMouseEnabled(x=False, y=False)
-            self.image_view.setMenuEnabled(False)
+        self.image_view = self.spectrum_widget.addViewBox()
+        self.image_view.setAspectLocked(True)
+        self.image_view.setMouseEnabled(x=False, y=False)
+        self.image_view.setMenuEnabled(False)
 
-            # Create the ImageItem and set it to self.image_item
-            self.image_item = pg.ImageItem()
-            self.image_view.addItem(self.image_item)
-        else:
-            print("Error: 'self.spectrum_widget' is None.")
+        # Create the ImageItem and set it to self.image_item
+        self.image_item = pg.ImageItem()
+        self.image_view.addItem(self.image_item)
+        # Creating ROI
+        self.ft_roi = pg.ROI(pos = self.image_view.viewRect().center(), size = (50, 50), hoverPen='r', 
+                            resizable= True, invertible= True, 
+                            rotatable= False)
+        self.image_view.addItem(self.ft_roi)
+        self.add_scale_handles_ROI() 
+        
+        # Connecting ROI signal to update region of data selected
+        self.ft_roi.sigRegionChangeFinished.connect(lambda: self.region_update())
 
-    #WE CAN DELETE THIS FUNCTION
     def reshape(self, img_height, img_width):
         """
         Resize the image to the specified dimensions.
-
-        Parameters:
-        - img_height (int): The current height of the image.
-        - img_width (int): The current width of the image.
-
-        Returns:
-        - None
         """
         new_height = min(Image.max_height, img_height)
         new_width = min(Image.max_width, img_width)
@@ -138,12 +144,6 @@ class Image():
     def reshape_all(self):
         """
         Resize all images in a list of Image instances to the smallest dimensions among them.
-
-        Parameters:
-        - cls (class): The class reference.
-
-        Returns:
-        - None
         """
         # Find the smallest image dimensions among all instances
         min_height = min(img.original_img.shape[0] for img in Image.image_instances if img.original_img is not None)
@@ -158,17 +158,19 @@ class Image():
                     img.original_img = cv2.resize(img.original_img, (min_width, min_height))
                     img.shape = img.original_img.shape
                     img.display_image(img.label)
-                    img.analyze_frequency_content(img.spectrum_widget)
+                    img.analyze_frequency_content()
             except Exception as e:
-                print(f"Error in instance {img.get_id()}: {str(e)}")
+                logging.error(f"Error in instance {img.get_id()}: {type(e).__name__} - {str(e)}")
 
-    def analyze_frequency_content(self, spectrum_widget, show=True):
+
+    def analyze_frequency_content(self):
        
         # Compute the 2D Fourier Transform
         self.fft = np.fft.fft2(self.original_img)
 
         # Shift the zero-frequency component to the center
         self.fft_shift = np.fft.fftshift(self.fft)
+        logging.debug("fft shifted shape: %s Original shape: %s", self.fft_shift.shape, self.original_img.shape)
 
         # Compute the magnitude of the spectrum
         self.mag = np.abs(self.fft)
@@ -196,32 +198,36 @@ class Image():
                         "FT Real": self.fft_components[2],
                         "FT Imaginary": self.fft_components[3]}
 
-        if show: 
-            # Plot the magnitude spectrum by default
-            self.plot_spectrum("FT Magnitude") 
+        
+        self.plot_spectrum("FT Magnitude") 
 
     def plot_spectrum(self, spectrum_type):
-      
+        
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
-            print(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]} , its shape is: {spectrum.shape}")
+            logging.info(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]}, its shape is: {spectrum.shape}")
+
 
             # Check for NaN values
             if np.isnan(spectrum).any():
-                print(f"Error: Spectrum type '{spectrum_type}' contains NaN values.")
+                logging.error(f"Error: Spectrum type '{spectrum_type}' contains NaN values. Check the data for issues.")
                 spectrum = np.zeros_like(spectrum)  # Set to black image in case of NaN values
 
             # Normalize the spectrum values to be between 0 and 255
             spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) 
             self.image_item.setImage(spectrum_normalized)
         else:
-            print(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
+            logging.error(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
+
+        
+    def connect_checkbox(self, checkbox):
+        checkbox.stateChanged.connect(lambda state, img=self: img.region_update())
 
     def change_brightness(self, brightness_factor):
           
         # Change the brightness of the image
-        print(f'Brightness Factor: {brightness_factor}')
+        logging.debug(f'Brightness Factor: {brightness_factor}')
         if self.original_img is not None:
             self.original_img = np.clip(self.original_img + brightness_factor, 30, 240).astype(np.uint8)
             # Display Image only
@@ -231,7 +237,7 @@ class Image():
 
     def change_contrast(self, contrast_factor):
         
-        print(f'Contrast Factor: {contrast_factor}')
+        logging.debug(f'Contrast Factor: {contrast_factor}')
         if self.original_img is not None:
             # Change the contrast of the image
             self.original_img = np.clip(self.original_img * contrast_factor, 30, 240).astype(np.uint8)
@@ -246,44 +252,51 @@ class Image():
         q_image = QImage(numpy_array.data, width, height, bytes_per_line, QImage.Format_Grayscale8)
         return QPixmap.fromImage(q_image)
     
-    # def region_update(self, finish = False):
-    #     if finish:
-    #          # Emit signal when ROI changes
-    #         self.sig_emitter.sig_ROI_changed.emit(self.sender())
-                
-    #     # Returns the data from the selected region
-    #     self.inner_img, self.outer_img =  self.return_region_slice()
+    def region_update(self):
+       
+        self.inner_img, self.outer_img =  self.return_region_slice()
+        if self.checkbox.isChecked():
+            new_img_fft=self.outer_img
+        else:
+            new_img_fft = self.inner_img
         
-    #     new_img = self.ft_roi.getArrayRegion(self.fft_shift, self.image_item )
-        
-    #     # Perform the inverse Fourier transform
-    #     new_img = np.fft.ifft2(np.fft.ifftshift(new_img))
-  
-    #     self.img = new_img
-    #     self.calc_imag_ft(self.img)
+        print("Awl Mara",new_img_fft,"check state:",self.checkbox.isChecked())
+        # # Perform the inverse Fourier transform
+        new_img = np.fft.ifft2(np.fft.ifftshift(new_img_fft))
+        self.original_img = new_img
+        self.analyze_frequency_content()
               
     # Returns the area of data inside and outside the mask created by the ROI
-    # def return_region_slice(self):
-    #     data = self.fft_shift
+    def return_region_slice(self):
+        data = self.fft_shift
                 
-    #     # Get index ranges of data from ROI
-    #     data_slice_indices, QTrans = self.ft_roi.getArraySlice(data, self.image_item, returnSlice=True)
+        # Get index ranges of data from ROI
+        data_slice_indices, QTrans = self.ft_roi.getArraySlice(data, self.image_item, returnSlice=True)
+        logging.debug("Sliced indices: %s", data_slice_indices)
+
         
-    #     # Setup a mask the size of ROI
-    #     mask = np.full(data.shape, False)
-    #     mask[data_slice_indices] = True
+        # Setup a mask the size of ROI
+        mask = np.full(data.shape, False)
+        logging.debug("Number of ones in mask before slicing: %d", np.count_nonzero(mask))
+        mask[data_slice_indices] = True
+        logging.debug("Number of ones in mask after slicing: %d and its shape: %s", np.count_nonzero(mask), mask.shape)
+        masked_data_in = data * mask
+        logging.debug("Masked in: %s", str(masked_data_in[0][:5]))
+        logging.debug("Masked in shape: %s", masked_data_in.shape)
+        masked_data_out = data.copy()
+        masked_data_out[mask] = 0
+        logging.debug("Masked out: %s", str(masked_data_out[0][:5]))
+        logging.debug("Masked out shape: %s", masked_data_out.shape)
+
         
-    #     masked_data_in = data * mask
-    #     masked_data_out = data.copy()
-    #     masked_data_out[mask] = 0
-        
-    #     return (masked_data_in, masked_data_out)
+        return (masked_data_in, masked_data_out)
     
     def add_scale_handles_ROI(self):
         positions = np.array([[0,0], [1,0], [1,1], [0,1]])
         for pos in positions:        
             self.ft_roi.addScaleHandle(pos = pos, center = 1 - pos)
               
+#Resetting
     def center_ROI_to_image(self):
         roi_rect = self.ft_roi.size()
         half_width = roi_rect[0] / 2
@@ -295,6 +308,7 @@ class Image():
     def set_ROI_size_to_image(self):
         self.ft_roi.setSize(size = (self.image_item.boundingRect().width(), self.image_item.boundingRect().height()))
                
-    # def reset_ROI(self):
-    #     self.set_ROI_size_to_image()
-    #     self.center_ROI_to_image()
+    def reset_ROI(self):
+        self.set_ROI_size_to_image()
+        self.center_ROI_to_image()
+        

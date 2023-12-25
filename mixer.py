@@ -5,6 +5,9 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtGui import QImage, QPixmap
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import  QMessageBox
+import logging
+
+logging.basicConfig(filename = 'debugging.log', level = logging.DEBUG, format = '%(asctime)s - %(levelname)s - %(message)s', filemode='w')
 
 class Mixer():
     def __init__(self, images,ui,combo_output,output_labels):
@@ -31,21 +34,21 @@ class Mixer():
                 selected_component = combo.currentText()
 
                 if selected_component == "Magnitude":
-                    # print("MAG SHIFTED:",img.fft_components[0][0][:5])
                     magnitude += (weight / 100) * img.mag_shifted
-                    print(f'Mag after component {i} equal to: {magnitude[0][:5]}')
+                    logging.debug(f'Mag after component {i} equal to: %s', str(magnitude[0][:5]))
                 elif selected_component == "Phase":
-                    # print("Phase SHIFTED:",img.fft_components[1][0][:5]) 
+
                     phase += (weight / 100) * img.phase_shifted
-                    print(f'phase after component {i} using the weight {weight} equal to: {phase[0][:5]}')
+                    logging.debug(f'phase after component {i} using the weight {weight} equal to: %s', str(phase[0][:5]))
 
 
             # Combine magnitude and phase components
             mixed_image = np.abs(np.fft.ifft2(magnitude * np.exp(1j * phase))) 
-            print(f'Original image: {self.images[0].original_img[0][:10]}')
-            print("Mixed Image before clipping:",mixed_image[0][:10])
-            mixed_image=np.clip(mixed_image, 0,255) 
-            print("after clipping:",mixed_image[0][:10])
+            logging.debug(f'Original image: %s', str(self.images[0].original_img[0][:7]))
+            logging.debug("Mixed Image before clipping: %s", str(mixed_image[0][:7]))
+            mixed_image = np.clip(mixed_image, 0, 255)
+            logging.debug("After clipping: %s", str(mixed_image[0][:7]))
+
             
 
         elif self.ui.modeCombo.currentText() == "Real/Imag":
@@ -62,9 +65,9 @@ class Mixer():
             
             
             mixed_image = np.abs(np.fft.ifft2(real + imag * 1j))
-            print ("before cliping:",mixed_image)
+            logging.debug("Before clipping: %s", mixed_image)
             mixed_image= np.clip(mixed_image, 0,255).astype(np.uint8)
-            print("after clipping:",mixed_image)
+            logging.debug("after clipping: %s",mixed_image)
         output_label = self.output_labels
         output_label_combo = self.ui.outputBox 
         self.display_mixed(mixed_image,output_label,output_label_combo)
@@ -73,7 +76,7 @@ class Mixer():
         
         mixed_image = cv2.normalize(mixed_image, None, 0, 255, cv2.NORM_MINMAX).astype(np.uint8)
         mixed_image= cv2.resize(mixed_image,(350,300))
-        print("Mixed Image After Normalaizing:",mixed_image)
+        logging.debug("Mixed Image After Normalaizing: %s", mixed_image)
         height, width = mixed_image.shape
         bytes_per_line = width
         mixed_image_bytes = mixed_image.tobytes()
