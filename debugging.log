@@ -1,0 +1,92 @@
+2023-12-25 14:16:58,256 - DEBUG - Reading QSS file in: :qdarkstyle\dark\darkstyle.qss
+2023-12-25 14:16:58,257 - INFO - QSS file successfully loaded.
+2023-12-25 14:16:58,257 - DEBUG - Checking patches for being applied.
+2023-12-25 14:16:58,274 - INFO - Found version patches to be applied.
+2023-12-25 14:16:58,274 - INFO - Found application patches to be applied.
+2023-12-25 14:17:02,716 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:02,722 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)
+2023-12-25 14:17:02,727 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:02,734 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)
+2023-12-25 14:17:10,536 - DEBUG - Sliced indices: (slice(84, 233, None), slice(24, 308, None))
+2023-12-25 14:17:10,536 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:10,536 - DEBUG - Number of ones in mask after slicing: 42316 and its shape: (250, 350)
+2023-12-25 14:17:10,538 - DEBUG - Masked in: [ 0.+0.j -0.+0.j  0.+0.j -0.+0.j -0.+0.j]
+2023-12-25 14:17:10,538 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:10,539 - DEBUG - Masked out: [  477.        -1.13686838e-12j  -825.64616141+3.79634768e+02j
+   174.85088036-1.05281198e+03j  -237.73456585+1.17426302e+03j
+ -1150.26654268+1.86540653e+01j]
+2023-12-25 14:17:10,539 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:10,547 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:10,553 - INFO - The type is FT Magnitude and its values are: [4.01700895e-10 1.04694031e-10 4.22151203e-10 4.59863259e-10
+ 3.02100567e-10], its shape is: (250, 350)
+2023-12-25 14:17:12,049 - DEBUG - Sliced indices: (slice(84, 233, None), slice(24, 308, None))
+2023-12-25 14:17:12,049 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:12,049 - DEBUG - Number of ones in mask after slicing: 42316 and its shape: (250, 350)
+2023-12-25 14:17:12,050 - DEBUG - Masked in: [-0.+0.j  0.+0.j  0.-0.j  0.+0.j  0.-0.j]
+2023-12-25 14:17:12,050 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:12,051 - DEBUG - Masked out: [-2.00424122e-11+1.30850886e-12j  4.37294645e-12-2.87725399e-12j
+ -6.87228052e-12-1.99573691e-11j  1.54060098e-11-1.70685688e-11j
+ -1.03413944e-11-1.10097487e-11j]
+2023-12-25 14:17:12,051 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:12,060 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:12,067 - INFO - The type is FT Magnitude and its values are: [4.01700895e-10 1.04694031e-10 4.22151203e-10 4.59863259e-10
+ 3.02100567e-10], its shape is: (250, 350)
+2023-12-25 14:17:13,696 - DEBUG - Sliced indices: (slice(84, 233, None), slice(24, 308, None))
+2023-12-25 14:17:13,697 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:13,697 - DEBUG - Number of ones in mask after slicing: 42316 and its shape: (250, 350)
+2023-12-25 14:17:13,698 - DEBUG - Masked in: [-0.+0.j  0.+0.j  0.-0.j  0.+0.j  0.-0.j]
+2023-12-25 14:17:13,698 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:13,699 - DEBUG - Masked out: [-2.00424122e-11+1.30850886e-12j  4.37294645e-12-2.87725399e-12j
+ -6.87228052e-12-1.99573691e-11j  1.54060098e-11-1.70685688e-11j
+ -1.03413944e-11-1.10097487e-11j]
+2023-12-25 14:17:13,699 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:13,707 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:13,713 - INFO - The type is FT Magnitude and its values are: [0. 0. 0. 0. 0.], its shape is: (250, 350)
+2023-12-25 14:17:16,104 - DEBUG - Sliced indices: (slice(79, 233, None), slice(25, 272, None))
+2023-12-25 14:17:16,104 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:16,104 - DEBUG - Number of ones in mask after slicing: 38038 and its shape: (250, 350)
+2023-12-25 14:17:16,106 - DEBUG - Masked in: [ 0.-0.j -0.+0.j -0.+0.j -0.+0.j  0.+0.j]
+2023-12-25 14:17:16,106 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:16,107 - DEBUG - Masked out: [-1.97933408e-44-1.01173749e-42j -3.54440930e-43+5.09371992e-43j
+ -8.68805048e-44+1.24566675e-42j -4.01822335e-43+6.34087555e-43j
+  1.66053868e-43+2.65896384e-43j]
+2023-12-25 14:17:16,107 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:16,114 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:16,120 - INFO - The type is FT Magnitude and its values are: [0. 0. 0. 0. 0.], its shape is: (250, 350)
+2023-12-25 14:17:17,469 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:17,475 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)
+2023-12-25 14:17:17,478 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:17,484 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)
+2023-12-25 14:17:19,592 - DEBUG - Sliced indices: (slice(84, 135, None), slice(24, 76, None))
+2023-12-25 14:17:19,592 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:19,592 - DEBUG - Number of ones in mask after slicing: 2652 and its shape: (250, 350)
+2023-12-25 14:17:19,593 - DEBUG - Masked in: [ 0.+0.j -0.+0.j  0.+0.j -0.+0.j -0.+0.j]
+2023-12-25 14:17:19,593 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:19,594 - DEBUG - Masked out: [  477.        -1.13686838e-12j  -825.64616141+3.79634768e+02j
+   174.85088036-1.05281198e+03j  -237.73456585+1.17426302e+03j
+ -1150.26654268+1.86540653e+01j]
+2023-12-25 14:17:19,594 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:19,603 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:19,609 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)
+2023-12-25 14:17:21,752 - DEBUG - Sliced indices: (slice(62, 135, None), slice(24, 154, None))
+2023-12-25 14:17:21,752 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:21,752 - DEBUG - Number of ones in mask after slicing: 9490 and its shape: (250, 350)
+2023-12-25 14:17:21,754 - DEBUG - Masked in: [ 0.+0.j -0.+0.j  0.+0.j -0.+0.j -0.+0.j]
+2023-12-25 14:17:21,754 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:21,755 - DEBUG - Masked out: [  477.        -3.41060513e-13j  -825.64616141+3.79634768e+02j
+   174.85088036-1.05281198e+03j  -237.73456585+1.17426302e+03j
+ -1150.26654268+1.86540653e+01j]
+2023-12-25 14:17:21,755 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:21,763 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:21,769 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)
+2023-12-25 14:17:23,576 - DEBUG - Sliced indices: (slice(62, 106, None), slice(96, 154, None))
+2023-12-25 14:17:23,576 - DEBUG - Number of ones in mask before slicing: 0
+2023-12-25 14:17:23,576 - DEBUG - Number of ones in mask after slicing: 2552 and its shape: (250, 350)
+2023-12-25 14:17:23,577 - DEBUG - Masked in: [ 0.+0.j -0.+0.j  0.+0.j -0.+0.j -0.+0.j]
+2023-12-25 14:17:23,578 - DEBUG - Masked in shape: (250, 350)
+2023-12-25 14:17:23,579 - DEBUG - Masked out: [  477.        -1.13686838e-12j  -825.64616141+3.79634768e+02j
+   174.85088036-1.05281198e+03j  -237.73456585+1.17426302e+03j
+ -1150.26654268+1.86540653e+01j]
+2023-12-25 14:17:23,579 - DEBUG - Masked out shape: (250, 350)
+2023-12-25 14:17:23,588 - DEBUG - fft shifted shape: (250, 350) Original shape: (250, 350)
+2023-12-25 14:17:23,593 - INFO - The type is FT Magnitude and its values are: [123.39221465 136.26324648 139.47521982 141.78630663 140.97498647], its shape is: (250, 350)

@@ -15,9 +15,6 @@ logging.basicConfig(filename = 'debugging.log', level = logging.DEBUG, format = 
 
 '''
 What's Left:
-1-Nkbr 7gm el Plotwidget (setaspect= true btkbro bs bytsrf bghraba)
-2-N3rf leh el state bta3 el checkbox msh bytghyr
-3-Moshklet lw 3mlt import l image fo2 el image elspectrum byrsm etnen gmb b3d (spectrum_widget.clear(btfadeeh khales)) <<MMKN MNE3MELHASH>>
 '''
 class FourierTransformMixer(QMainWindow):
   
@@ -66,7 +63,7 @@ class FourierTransformMixer(QMainWindow):
         weight_slider.valueChanged.connect(self.mixer.mix_images)
         
     for label, spectrum, image,checkbox in zip(self.labels, self.spectrums, self.images,self.check_boxes):
-        label.mouseDoubleClickEvent = lambda event, img=image, lbl1=label, lbl2=spectrum: img.browse_file(lbl1, lbl2,checkbox)
+        label.mouseDoubleClickEvent = lambda event, img=image, lbl1=label, lbl2=spectrum, chckbx=checkbox: img.browse_file(lbl1, lbl2,chckbx)
         
     for checkbox, image in zip(self.check_boxes, self.images):
             image.connect_checkbox(checkbox)
