@@ -67,10 +67,15 @@ class FourierTransformMixer(QMainWindow):
         
     for checkbox, image in zip(self.check_boxes, self.images):
             image.connect_checkbox(checkbox)
+            
+    for combo, image in zip(self.combos_input, self.images):
+      combo.currentIndexChanged.connect(lambda index, img=image ,cb=combo : self.handle_combobox_change(index, img,cb))
 
   def handle_combobox_change(self, index, image, combo):
     try:
         spectrum_type = combo.currentText()
+        print("type", spectrum_type)
+        image.first_time = True
         image.plot_spectrum(spectrum_type)
     except Exception as e:
         logging.error(f"An error occurred: {str(e)}")

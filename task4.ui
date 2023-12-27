@@ -721,6 +721,18 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </property>
                 <item>
                  <widget class="QLabel" name="label_11">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Image 1</string>
                   </property>
@@ -742,7 +754,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>150</width>
+                    <width>200</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -774,7 +786,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>250</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -814,13 +826,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -864,6 +875,18 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </property>
                 <item>
                  <widget class="QLabel" name="label_12">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Image 2</string>
                   </property>
@@ -885,7 +908,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>150</width>
+                    <width>200</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -917,7 +940,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>250</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -954,13 +977,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1004,6 +1026,18 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </property>
                 <item>
                  <widget class="QLabel" name="label_14">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Image 3</string>
                   </property>
@@ -1025,7 +1059,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>150</width>
+                    <width>200</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -1057,7 +1091,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>250</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -1094,13 +1128,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>
@@ -1144,6 +1177,18 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                 </property>
                 <item>
                  <widget class="QLabel" name="label_13">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="text">
                    <string>Image 4</string>
                   </property>
@@ -1165,7 +1210,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>150</width>
+                    <width>200</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -1197,7 +1242,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>16777215</width>
+                    <width>250</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -1234,13 +1279,12 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>50</width>
+                    <width>70</width>
                     <height>25</height>
                    </size>
                   </property>
                   <property name="font">
                    <font>
-                    <weight>75</weight>
                     <bold>true</bold>
                    </font>
                   </property>

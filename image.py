@@ -17,6 +17,7 @@ class Image():
     ID = 0
     
     def __init__(self):
+        self.first_time = True
         self.id = Image.ID
         Image.ID +=1
         self.path = None
@@ -54,6 +55,7 @@ class Image():
             self.checkbox = checkbox
             self.init_spectrum()
             self.set_file_path(path, label)
+        self.first_time = True
             
             
 
@@ -207,21 +209,22 @@ class Image():
         self.plot_spectrum("FT Magnitude") 
 
     def plot_spectrum(self, spectrum_type):
-        
+        print("type after: ", spectrum_type)
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
             logging.info(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]}, its shape is: {spectrum.shape}")
 
-
             # Check for NaN values
-            if np.isnan(spectrum).any():
-                logging.error(f"Error: Spectrum type '{spectrum_type}' contains NaN values. Check the data for issues.")
-                spectrum = np.zeros_like(spectrum)  # Set to black image in case of NaN values
+            # if np.isnan(spectrum).any():
+            #     logging.error(f"Error: Spectrum type '{spectrum_type}' contains NaN values. Check the data for issues.")
+            #     spectrum = np.zeros_like(spectrum)  # Set to black image in case of NaN values
 
             # Normalize the spectrum values to be between 0 and 255
             spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) 
-            self.image_item.setImage(spectrum_normalized)
+            if self.first_time:
+                self.first_time = False
+                self.image_item.setImage(spectrum_normalized)
         else:
             logging.error(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
 
@@ -246,6 +249,7 @@ class Image():
         if self.original_img is not None:
             # Change the contrast of the image
             self.original_img = np.clip(self.original_img * contrast_factor, 30, 240).astype(np.uint8)
+            self.original_img = ((self.original_img - self.original_img.min()) / (self.original_img.max() - self.original_img.min()) * 255).astype(np.uint8) 
             # Display Image only
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
@@ -268,6 +272,7 @@ class Image():
         print("check state:", self.checkbox.isChecked())
         # # Perform the inverse Fourier transform
         new_img = np.fft.ifft2(np.fft.ifftshift(new_img_fft))
+        self.untouch = new_img
         self.original_img = new_img
         self.analyze_frequency_content()
               
