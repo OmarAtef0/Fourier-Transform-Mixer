@@ -113,15 +113,16 @@ class Image():
         self.spectrum_widget.clear()
         self.image_view = self.spectrum_widget.addViewBox()
         self.image_view.setAspectLocked(True)
-        # self.image_view.setMouseEnabled(x=False, y=False)
-        self.image_view.setMenuEnabled(False)
+        self.image_view.setMouseEnabled(x=False, y=False)
+        # self.image_view.setMenuEnabled(False)
 
         # Create the ImageItem and set it to self.image_item
         self.image_item = pg.ImageItem()
         self.image_view.addItem(self.image_item)
         self.image_item.setTransform(pg.QtGui.QTransform().rotate(90))
         # Set the viewRange to cover the entire image
-        self.image_view.setRange(xRange=[-150, 0], yRange=[-1, 170])
+        # self.image_view.setRange(xRange=[-150, 0], yRange=[-1, 170])
+    
 
         # Creating ROI
         self.ft_roi = pg.ROI(pos = self.image_view.viewRect().center(), size = (50, 50), hoverPen='r', 
