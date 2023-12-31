@@ -133,6 +133,16 @@ class Image():
         
         # Connecting ROI signal to update region of data selected
         self.ft_roi.sigRegionChangeFinished.connect(lambda: self.region_update())
+    #ZWDTHA
+    def sync_roi_position(self, reference_roi):
+        if self.ft_roi is not None:
+            self.ft_roi.setPos(reference_roi.pos())
+    
+    def connect_roi_movement(self, other_img):
+        if self.ft_roi is not None and other_img.ft_roi is not None:
+            # Connect the signal of this ROI to update the other ROI
+            self.ft_roi.sigRegionChanged.connect(lambda: other_img.sync_roi_position(self.ft_roi))
+
 
     def reshape(self, img_height, img_width):
         """
@@ -313,13 +323,12 @@ class Image():
         half_width = roi_rect[0] / 2
         half_height = roi_rect[1] / 2
         center = self.image_item.boundingRect().center()
-        adjusted_center = [center.x() - half_width, center.y()- half_height]
+        adjusted_center = [center.x() - 2*half_width, center.y()- 4*half_height]
         self.ft_roi.setPos(adjusted_center)
             
     def set_ROI_size_to_image(self):
         self.ft_roi.setSize(size = (self.image_item.boundingRect().width(), self.image_item.boundingRect().height()))
                
     def reset_ROI(self):
-        self.set_ROI_size_to_image()
         self.center_ROI_to_image()
-        
+ 

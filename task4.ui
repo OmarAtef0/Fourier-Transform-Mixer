@@ -239,7 +239,7 @@
               <number>5</number>
              </property>
              <item>
-              <widget class="QLabel" name="label_7">
+              <widget class="QLabel" name="label_5">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -621,7 +621,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                  <number>5</number>
                 </property>
                 <item>
-                 <widget class="QLabel" name="label_5">
+                 <widget class="QLabel" name="label_7">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                     <horstretch>0</horstretch>
@@ -959,6 +959,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                      </property>
                      <property name="font">
                       <font>
+                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -1110,6 +1111,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                      </property>
                      <property name="font">
                       <font>
+                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -1261,6 +1263,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                      </property>
                      <property name="font">
                       <font>
+                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>
@@ -1412,6 +1415,7 @@ font: 75 9pt &quot;MS Shell Dlg 2&quot;;</string>
                      </property>
                      <property name="font">
                       <font>
+                       <weight>75</weight>
                        <bold>true</bold>
                       </font>
                      </property>

@@ -47,6 +47,7 @@ class FourierTransformMixer(QMainWindow):
 
     self.ui.modeCombo.currentIndexChanged.connect(self.update_combobox_options)
     
+    
     for label in self.labels:
         label.mousePressEvent = self.on_mouse_press
         label.mouseMoveEvent = self.on_mouse_move
@@ -70,7 +71,11 @@ class FourierTransformMixer(QMainWindow):
             
     for combo, image in zip(self.combos_input, self.images):
       combo.currentIndexChanged.connect(lambda index, img=image ,cb=combo : self.handle_combobox_change(index, img,cb))
-
+# ZWDTHA
+    for img1 in self.images:
+        for img2 in self.images:
+            if img1 != img2:
+                img1.connect_roi_movement(img2)
   def handle_combobox_change(self, index, image, combo):
     try:
         spectrum_type = combo.currentText()
