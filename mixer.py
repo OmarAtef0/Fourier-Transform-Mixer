@@ -101,4 +101,3 @@ class Mixer():
             # ax.imshow(mixed_image, cmap='gray')
             # self.canvas.draw()
 
-
