@@ -13,7 +13,7 @@ class Image():
     #Global Variables
     image_instances = []
     max_width = 350
-    max_height = 250
+    max_height = 300
     ID = 0
     
     def __init__(self):
@@ -42,7 +42,6 @@ class Image():
         self.imag, self.imag_shifted = None, None
         Image.image_instances.append(self)
 
-
     def get_id(self):
         return self.id
 
@@ -55,9 +54,7 @@ class Image():
             self.checkbox = checkbox
             self.init_spectrum()
             self.set_file_path(path, label)
-        self.first_time = True
-            
-            
+        self.first_time = True   
 
     def set_file_path(self, path, label):
         self.path = path
@@ -86,7 +83,6 @@ class Image():
         except Exception as e:
             logging.error(f"An unexpected error occurred: {str(e)}")
 
-
     def display_image(self, label):
         """
         Display the image on the specified QLabel.
@@ -114,7 +110,6 @@ class Image():
         self.image_view = self.spectrum_widget.addViewBox()
         self.image_view.setAspectLocked(True)
         self.image_view.setMouseEnabled(x=False, y=False)
-        # self.image_view.setMenuEnabled(False)
 
         # Create the ImageItem and set it to self.image_item
         self.image_item = pg.ImageItem()
@@ -124,25 +119,33 @@ class Image():
         # self.image_view.setRange(xRange=[-150, 0], yRange=[-1, 170])
     
 
-        # Creating ROI
-        self.ft_roi = pg.ROI(pos = self.image_view.viewRect().center(), size = (50, 50), hoverPen='r', 
-                            resizable= True, invertible= True, 
-                            rotatable= False)
+        # Creating ROI 
+        if self.id == 0:
+            self.ft_roi = pg.ROI(pos = self.image_view.viewRect().center(), size = (50, 50), hoverPen='r', 
+                        resizable= True, invertible= True, movable=True,
+                        rotatable= False)
+        else:
+            self.ft_roi = pg.ROI(pos = self.image_view.viewRect().center(), size = (50, 50), hoverPen='r', 
+                        resizable= True, invertible= True, movable=False, 
+                        rotatable= False)
+                
         self.image_view.addItem(self.ft_roi)
-        self.add_scale_handles_ROI() 
+        self.add_scale_handles_ROI()
+
         
         # Connecting ROI signal to update region of data selected
         self.ft_roi.sigRegionChangeFinished.connect(lambda: self.region_update())
+    
     #ZWDTHA
     def sync_roi_position(self, reference_roi):
         if self.ft_roi is not None:
             self.ft_roi.setPos(reference_roi.pos())
     
-    def connect_roi_movement(self, other_img):
-        if self.ft_roi is not None and other_img.ft_roi is not None:
-            # Connect the signal of this ROI to update the other ROI
-            self.ft_roi.sigRegionChanged.connect(lambda: other_img.sync_roi_position(self.ft_roi))
-
+    # def connect_roi_movement(self, reference_roi):
+    #     if self.ft_roi is not None and other_img.ft_roi is not None:
+    #         # Connect the signal of this ROI to update the other ROI
+    #         self.ft_roi.sigRegionChanged.connect(lambda: other_img.sync_roi_position(self.ft_roi))
+    
 
     def reshape(self, img_height, img_width):
         """
@@ -179,7 +182,6 @@ class Image():
                     img.analyze_frequency_content()
             except Exception as e:
                 logging.error(f"Error in instance {img.get_id()}: {type(e).__name__} - {str(e)}")
-
 
     def analyze_frequency_content(self):
        
@@ -226,11 +228,6 @@ class Image():
             spectrum = self.fft_dict[spectrum_type]
             logging.info(f"The type is {spectrum_type} and its values are: {spectrum[0][:5]}, its shape is: {spectrum.shape}")
 
-            # Check for NaN values
-            # if np.isnan(spectrum).any():
-            #     logging.error(f"Error: Spectrum type '{spectrum_type}' contains NaN values. Check the data for issues.")
-            #     spectrum = np.zeros_like(spectrum)  # Set to black image in case of NaN values
-
             # Normalize the spectrum values to be between 0 and 255
             spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) 
             if self.first_time:
@@ -238,14 +235,12 @@ class Image():
                 self.image_item.setImage(spectrum_normalized)
         else:
             logging.error(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
-
-        
+     
     def connect_checkbox(self, checkbox):
         checkbox.stateChanged.connect(lambda state, img=self: img.region_update())
 
-    def change_brightness(self, brightness_factor):
-          
-        # Change the brightness of the image
+    def change_brightness(self, brightness_factor):      
+       # Change the brightness of the image
         logging.debug(f'Brightness Factor: {brightness_factor}')
         if self.original_img is not None:
             self.original_img = np.clip(self.original_img + brightness_factor, 30, 240).astype(np.uint8)
@@ -273,13 +268,18 @@ class Image():
         return QPixmap.fromImage(q_image)
     
     def region_update(self):
+        if self.id == 0:
+            for img in Image.image_instances:
+                if img.id is not self.id:
+                    img.sync_roi_position(self.ft_roi)
+                
         self.inner_img, self.outer_img =  self.return_region_slice()
         if self.checkbox.isChecked():
             new_img_fft = self.outer_img
         else:
             new_img_fft = self.inner_img
         
-        print("Awl Mara",new_img_fft)
+        print("Awl Mara", new_img_fft)
         print("check state:", self.checkbox.isChecked())
         # # Perform the inverse Fourier transform
         new_img = np.fft.ifft2(np.fft.ifftshift(new_img_fft))
@@ -294,7 +294,6 @@ class Image():
         # Get index ranges of data from ROI
         data_slice_indices, QTrans = self.ft_roi.getArraySlice(data, self.image_item, returnSlice=True)
         logging.debug("Sliced indices: %s", data_slice_indices)
-
         
         # Setup a mask the size of ROI
         mask = np.full(data.shape, False)
