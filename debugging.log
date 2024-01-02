@@ -1,5 +1,0 @@
-2024-01-02 04:08:18,640 - DEBUG - Reading QSS file in: :qdarkstyle\dark\darkstyle.qss
-2024-01-02 04:08:18,640 - INFO - QSS file successfully loaded.
-2024-01-02 04:08:18,640 - DEBUG - Checking patches for being applied.
-2024-01-02 04:08:18,659 - INFO - Found version patches to be applied.
-2024-01-02 04:08:18,659 - INFO - Found application patches to be applied.

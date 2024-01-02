@@ -132,7 +132,7 @@ class Image():
                         rotatable= False)
         else:
             self.ft_roi = pg.ROI(pos = self.image_view.viewRect().center(), size = (50, 50), hoverPen='r', 
-                        resizable= True, invertible= True, movable=False, 
+                        resizable= False, invertible= False, movable=False, 
                         rotatable= False)
                 
         self.image_view.addItem(self.ft_roi)
