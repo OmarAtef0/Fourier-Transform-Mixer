@@ -177,12 +177,12 @@ class FourierTransformMixer(QMainWindow):
             for i in range(len(self.images)):
                 if abs(dx) > margin:
                     # Adjust brightness based on horizontal movement
-                    brightness_factor = dx / 100.0
+                    brightness_factor = (dx/10000) 
                     self.brightness_accumulated[i] += brightness_factor
 
                 if abs(dy) > margin:
                     # Adjust contrast based on vertical movement
-                    contrast_factor = dy / 100.0
+                    contrast_factor = (dy/10000) 
                     self.contrast_accumulated[i] += contrast_factor
 
             self.x = crrX

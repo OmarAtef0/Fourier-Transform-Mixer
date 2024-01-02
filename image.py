@@ -18,10 +18,12 @@ class Image():
     
     def __init__(self):
         self.first_time = True
+        self.first_display = True
         self.id = Image.ID
         Image.ID +=1
         self.path = None
         self.original_img = None  # Store the original image data (NumPy array)
+        self.init_data = None
         self.img = None  # for display only
         self.inner_img, self.outer_img = None, None
         # self.displayed_after_reshape = False  # Flag to track if displayed after reshape
@@ -96,8 +98,12 @@ class Image():
         self.original_img = self.original_img.astype(np.uint8)
         cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
         
-        # Set the original and current images as QPixmap
-        self.img = self.qimage_from_numpy(self.original_img)
+        
+        
+        # Set the original and current images as QPixmap only if it's the first display
+        if self.first_display:
+            self.img = self.qimage_from_numpy(self.original_img)
+            self.first_display = False
         
         # Check if the image is not None
         if self.img is not None:
@@ -222,7 +228,6 @@ class Image():
         self.plot_spectrum("FT Magnitude") 
 
     def plot_spectrum(self, spectrum_type):
-        print("type after: ", spectrum_type)
         if spectrum_type in self.fft_dict:
             # Retrieve the corresponding spectrum from the dictionary
             spectrum = self.fft_dict[spectrum_type]
@@ -272,41 +277,47 @@ class Image():
             for img in Image.image_instances:
                 if img.id is not self.id:
                     img.sync_roi_position(self.ft_roi)
-                
         self.inner_img, self.outer_img =  self.return_region_slice()
         if self.checkbox.isChecked():
             new_img_fft = self.outer_img
         else:
             new_img_fft = self.inner_img
         
-        print("Awl Mara", new_img_fft)
+
         print("check state:", self.checkbox.isChecked())
-        # # Perform the inverse Fourier transform
+        #debug 2
+        print("\n\n\n", np.abs(new_img_fft), "\n\n\n" )
         new_img = np.fft.ifft2(np.fft.ifftshift(new_img_fft))
-        self.untouch = new_img
         self.original_img = new_img
         self.analyze_frequency_content()
               
     # Returns the area of data inside and outside the mask created by the ROI
     def return_region_slice(self):
-        data = self.fft_shift
+        if self.init_data is None:
+            self.init_data = self.fft_shift.copy()
+
+        data = self.init_data.copy()
                 
         # Get index ranges of data from ROI
         data_slice_indices, QTrans = self.ft_roi.getArraySlice(data, self.image_item, returnSlice=True)
-        logging.debug("Sliced indices: %s", data_slice_indices)
+        
         
         # Setup a mask the size of ROI
         mask = np.full(data.shape, False)
-        logging.debug("Number of ones in mask before slicing: %d", np.count_nonzero(mask))
+        
+        
+            # Use the mask of anything other than the selected indices
         mask[data_slice_indices] = True
-        logging.debug("Number of ones in mask after slicing: %d and its shape: %s", np.count_nonzero(mask), mask.shape)
+
+      
+        
         masked_data_in = data * mask
-        logging.debug("Masked in: %s", str(masked_data_in[0][:5]))
-        logging.debug("Masked in shape: %s", masked_data_in.shape)
+        
         masked_data_out = data.copy()
         masked_data_out[mask] = 0
-        logging.debug("Masked out: %s", str(masked_data_out[0][:5]))
-        logging.debug("Masked out shape: %s", masked_data_out.shape)
+        
+        #debug 
+        print("\n\nMask",self.id,":\n", mask,"\ndata",self.id,":\n",np.abs(data), "\n in",self.id,":\n" ,np.abs(masked_data_in), "\nout",self.id,":\n", np.abs(masked_data_out), "\n\n")
 
         
         return (masked_data_in, masked_data_out)
