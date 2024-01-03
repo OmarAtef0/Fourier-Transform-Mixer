@@ -70,13 +70,6 @@ class Image():
             self.reshape(self.original_img.shape[0], self.original_img.shape[1])
             self.reshape_all()
             
-            # Convert to uint8 and scale pixel values
-            self.original_img = self.original_img.astype(np.uint8)
-            cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
-
-            # Convert to QImage
-            self.img = self.qimage_from_numpy(self.original_img)
-            
             self.analyze_frequency_content()
             self.display_image(label)
 
@@ -98,12 +91,8 @@ class Image():
         self.original_img = self.original_img.astype(np.uint8)
         cv2.normalize(self.original_img, self.original_img, 0, 255, cv2.NORM_MINMAX)
         
-        
-        
         # Set the original and current images as QPixmap only if it's the first display
-        if self.first_display:
-            self.img = self.qimage_from_numpy(self.original_img)
-            self.first_display = False
+        self.img = self.qimage_from_numpy(self.original_img)
         
         # Check if the image is not None
         if self.img is not None:
@@ -120,10 +109,7 @@ class Image():
         # Create the ImageItem and set it to self.image_item
         self.image_item = pg.ImageItem()
         self.image_view.addItem(self.image_item)
-        self.image_item.setTransform(pg.QtGui.QTransform().rotate(90))
-        # Set the viewRange to cover the entire image
-        # self.image_view.setRange(xRange=[-150, 0], yRange=[-1, 170])
-    
+        self.image_item.setTransform(pg.QtGui.QTransform().rotate(90))  
 
         # Creating ROI 
         if self.id == 0:
@@ -137,7 +123,6 @@ class Image():
                 
         self.image_view.addItem(self.ft_roi)
         self.add_scale_handles_ROI()
-
         
         # Connecting ROI signal to update region of data selected
         self.ft_roi.sigRegionChangeFinished.connect(lambda: self.region_update())
@@ -145,13 +130,8 @@ class Image():
     #ZWDTHA
     def sync_roi_position(self, reference_roi):
         if self.ft_roi is not None:
-            self.ft_roi.setPos(reference_roi.pos())
-    
-    # def connect_roi_movement(self, reference_roi):
-    #     if self.ft_roi is not None and other_img.ft_roi is not None:
-    #         # Connect the signal of this ROI to update the other ROI
-    #         self.ft_roi.sigRegionChanged.connect(lambda: other_img.sync_roi_position(self.ft_roi))
-    
+            self.ft_roi.setPos(reference_roi.pos())   
+            self.ft_roi.setSize(reference_roi.size())
 
     def reshape(self, img_height, img_width):
         """
@@ -178,7 +158,6 @@ class Image():
         self.max_height, self.max_width = min_height, min_width
         # Resize all images to the smallest dimensions
         for img in Image.image_instances:
-        
             try:
                 if img.original_img is not None:
                     # img.reshape(Image.min_height, Image.min_width)
@@ -222,10 +201,11 @@ class Image():
                         "FT Magnitude": self.fft_components[0],
                         "FT Phase": self.fft_components[1],
                         "FT Real": self.fft_components[2],
-                        "FT Imaginary": self.fft_components[3]}
+                        "FT Imaginary": self.fft_components[3]
+                        }
 
-        
-        self.plot_spectrum("FT Magnitude") 
+        if self.first_time:
+            self.plot_spectrum("FT Magnitude") 
 
     def plot_spectrum(self, spectrum_type):
         if spectrum_type in self.fft_dict:
@@ -235,9 +215,9 @@ class Image():
 
             # Normalize the spectrum values to be between 0 and 255
             spectrum_normalized = ((spectrum - spectrum.min()) / (spectrum.max() - spectrum.min()) * 255).astype(np.uint8) 
-            if self.first_time:
-                self.first_time = False
-                self.image_item.setImage(spectrum_normalized)
+            
+
+            self.image_item.setImage(spectrum_normalized)
         else:
             logging.error(f"Error: Spectrum type '{spectrum_type}' not found in the dictionary.")
      
@@ -255,7 +235,6 @@ class Image():
         # Update the QPixmap
 
     def change_contrast(self, contrast_factor):
-        
         logging.debug(f'Contrast Factor: {contrast_factor}')
         if self.original_img is not None:
             # Change the contrast of the image
@@ -264,7 +243,6 @@ class Image():
             # Display Image only
             self.img = self.qimage_from_numpy(self.original_img)
             self.display_image(self.label)
-        # Update the QPixmap
 
     def qimage_from_numpy(self, numpy_array):
         height, width = numpy_array.shape
@@ -277,7 +255,9 @@ class Image():
             for img in Image.image_instances:
                 if img.id is not self.id:
                     img.sync_roi_position(self.ft_roi)
+                    
         self.inner_img, self.outer_img =  self.return_region_slice()
+        
         if self.checkbox.isChecked():
             new_img_fft = self.outer_img
         else:
@@ -289,6 +269,7 @@ class Image():
         print("\n\n\n", np.abs(new_img_fft), "\n\n\n" )
         new_img = np.fft.ifft2(np.fft.ifftshift(new_img_fft))
         self.original_img = new_img
+        self.first_time = False
         self.analyze_frequency_content()
               
     # Returns the area of data inside and outside the mask created by the ROI
@@ -297,29 +278,21 @@ class Image():
             self.init_data = self.fft_shift.copy()
 
         data = self.init_data.copy()
-                
+        
         # Get index ranges of data from ROI
         data_slice_indices, QTrans = self.ft_roi.getArraySlice(data, self.image_item, returnSlice=True)
-        
         
         # Setup a mask the size of ROI
         mask = np.full(data.shape, False)
         
-        
-            # Use the mask of anything other than the selected indices
+        # Use the mask of anything other than the selected indices
         mask[data_slice_indices] = True
-
-      
-        
         masked_data_in = data * mask
-        
         masked_data_out = data.copy()
         masked_data_out[mask] = 0
         
         #debug 
         print("\n\nMask",self.id,":\n", mask,"\ndata",self.id,":\n",np.abs(data), "\n in",self.id,":\n" ,np.abs(masked_data_in), "\nout",self.id,":\n", np.abs(masked_data_out), "\n\n")
-
-        
         return (masked_data_in, masked_data_out)
     
     def add_scale_handles_ROI(self):
@@ -341,4 +314,27 @@ class Image():
                
     def reset_ROI(self):
         self.center_ROI_to_image()
- 
+
+    def clear_current_image(self):
+        self.first_time = True
+        self.first_display = True        
+        self.path = None
+        self.original_img = None
+        self.init_data = None
+        self.img = None
+        self.inner_img, self.outer_img = None, None
+        self.label = None 
+        self.spectrum_widget = None
+        self.checkbox = None
+        self.image_view = None
+        self.image_item = None
+        self.shape = None
+        self.ft_roi = None
+        self.fft_components = []
+
+        #Image Components
+        self.fft, self.fft_shift = None, None
+        self.phase, self.phase_shifted = None, None
+        self.mag, self.mag_shifted = None, None
+        self.real, self.real_shifted= None, None
+        self.imag, self.imag_shifted = None, None
