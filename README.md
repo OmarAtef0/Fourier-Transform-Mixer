@@ -1,4 +1,4 @@
-# Fourier Fusion Studio
+# Fourier Fusion Lab
 - [Overview](#overview)
 - [Features](#features)
 - [Demo](#demo)
@@ -9,7 +9,7 @@
 
 ## Overview
 
-**Fourier Fusion Studio** is an advanced desktop application meticulously designed to demonstrate the intricate interplay between magnitude and phase components in signals, with a particular emphasis on frequency contributions. This software focuses on 2D signals (images), but the concepts apply to any type of signal. The program provides a feature-rich environment for viewing, customizing, and mixing grayscale images.
+**Fourier Fusion Lab** is an advanced desktop application meticulously designed to demonstrate the intricate interplay between magnitude and phase components in signals, with a particular emphasis on frequency contributions. This software focuses on 2D signals (images), but the concepts apply to any type of signal. The program provides a feature-rich environment for viewing, customizing, and mixing grayscale images.
 
 
 ## Features
@@ -52,9 +52,8 @@
 8. **Seamless Real-time Operations:**
    - Stay informed with a dynamic progress bar providing real-time updates on ongoing mixing processes, ensuring a seamless user experience even during resource-intensive operations.
 
-## Demo
-
-
+## Live Demo
+[Fourier Fusion Lab](https://github.com/OmarAtef0/Fourier-Transform-Mixer/blob/main/demo/Task4_demo.mkv)
 ## Installation
 
 1. Clone the repository:
