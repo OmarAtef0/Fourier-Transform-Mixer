@@ -1,4 +1,9 @@
 # Fourier-Transform-Mixer
+
+## Contributors
+
+We would like to acknowledge the following individuals for their contributions:
+
 <table>
   <tr>
     <td align="center">
