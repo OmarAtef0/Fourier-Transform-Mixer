@@ -53,7 +53,9 @@
    - Stay informed with a dynamic progress bar providing real-time updates on ongoing mixing processes, ensuring a seamless user experience even during resource-intensive operations.
 
 ## Live Demo
-[Fourier Fusion Lab](https://github.com/OmarAtef0/Fourier-Transform-Mixer/blob/main/demo/Task4_demo.mkv)
+
+https://github.com/OmarAtef0/Fourier-Transform-Mixer/assets/100636693/61165d64-174f-4378-a107-bc93944cf34e
+
 ## Installation
 
 1. Clone the repository:
